@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect } from 'react';
+import dynamic from "next/dynamic";
 
 import styles from './Aside.module.css';
+
+const AdSenseClientOnly = dynamic(() => import("./AdSenseClientOnly"), { ssr: false });
 
 const Aside = () => {
   useEffect(() => {
@@ -20,26 +23,12 @@ const Aside = () => {
     <div className={styles.asideContainer}>
       {/* Left Ad Section */}
       <div className={styles.leftAd}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block' }}
-          data-ad-client="ca-pub-3706062176737311"
-          data-ad-slot="6944319273"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
+        <AdSenseClientOnly />
       </div>
 
       {/* Right Ad Section */}
       <div className={styles.rightAd}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block' }}
-          data-ad-client="ca-pub-3706062176737311"
-          data-ad-slot="6944319273"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
+        <AdSenseClientOnly />
       </div>
     </div>
   );

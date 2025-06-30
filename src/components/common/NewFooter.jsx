@@ -30,6 +30,30 @@ export default function ModernFooter() {
           </div>
           <p className="text-xs mt-1">Made with ♥ in India</p>
 
+          <div className="flex flex-col items-center space-y-1 mt-2 mb-1">
+            <a
+              href="/about"
+              className="text-xs text-blue-200 underline hover:text-white transition-colors"
+              aria-label="About Us"
+            >
+              About Us
+            </a>
+            <a
+              href="/contact"
+              className="text-xs text-blue-200 underline hover:text-white transition-colors"
+              aria-label="Contact Us"
+            >
+              Contact Us
+            </a>
+            <a
+              href="/privacy-policy"
+              className="text-xs text-blue-200 underline hover:text-white transition-colors"
+              aria-label="Privacy Policy"
+            >
+              Privacy Policy
+            </a>
+          </div>
+
           <p className="text-sm">© 2025 MedGloss. All rights reserved.</p>
         </div>
       </div>
