@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
       <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
       <p className="mb-4">Last updated: June 2024</p>
       <p className="mb-4">
-        MedGloss ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, share, and store your information when you use our platform. By using MedGloss, you agree to this Privacy Policy.
+        MedGloss (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, share, and store your information when you use our platform. By using MedGloss, you agree to this Privacy Policy.
       </p>
 
       {/* Applicability */}
@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
         <li>To communicate with you about your account or content.</li>
         <li>To ensure the security and integrity of the Platform.</li>
         <li>We do not sell your personal information. Information may be shared with service providers (e.g., hosting, analytics) as needed, under strict confidentiality.</li>
-        <li>Content you submit may be visible to other users as part of the Platform's public features.</li>
+        <li>Content you submit may be visible to other users as part of the Platform&apos;s public features.</li>
       </ul>
 
       {/* Cross-Border Data Transfer */}
@@ -175,7 +175,7 @@ export default function PrivacyPolicy() {
       {/* Facebook Fan Page */}
       <h2 className="text-2xl font-semibold mt-8 mb-2">Facebook Fan Page</h2>
       <p className="mb-4">
-        We operate a Facebook Fan Page: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a>. Any information you provide or interact with on our Facebook Fan Page is subject to Facebook;s privacy policy as well as this Privacy Policy.
+        We operate a Facebook Fan Page: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a>. Any information you provide or interact with on our Facebook Fan Page is subject to Facebook&apos;s privacy policy as well as this Privacy Policy.
       </p>
 
       {/* Social Media Accounts */}
@@ -191,7 +191,7 @@ export default function PrivacyPolicy() {
       <h2 className="text-2xl font-semibold mt-8 mb-2">Legal Compliance</h2>
       <h3 className="text-xl font-semibold mt-4 mb-2">CCPA and CPRA (California)</h3>
       <p className="mb-4">
-        If you are a California resident, you have the right to know what personal information we collect, use, disclose, and sell. You have the right to request access to your personal information, request deletion, opt out of the sale of your personal information, and not be discriminated against for exercising your rights. We do not sell your personal information. For more information, please see the "Your Rights" section above.
+        If you are a California resident, you have the right to know what personal information we collect, use, disclose, and sell. You have the right to request access to your personal information, request deletion, opt out of the sale of your personal information, and not be discriminated against for exercising your rights. We do not sell your personal information. For more information, please see the &quot;Your Rights&quot; section above.
       </p>
       <h3 className="text-xl font-semibold mt-4 mb-2">CalOPPA (California)</h3>
       <p className="mb-4">
