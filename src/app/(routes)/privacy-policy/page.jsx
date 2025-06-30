@@ -149,6 +149,63 @@ export default function PrivacyPolicy() {
         All user-generated content remains the property of its creator. By submitting content to MedGloss, you grant us a license to display, distribute, and promote your content on the Platform. You are responsible for ensuring your content does not infringe on the rights of others.
       </p>
 
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Professional Privacy Policy Provisions</h2>
+      <p className="mb-4">
+        This Privacy Policy includes additional provisions to comply with GDPR, CCPA, CPRA, CalOPPA, and other applicable privacy laws. It also includes disclosures for third-party services such as Google Analytics, Firebase, Google Ads (AdSense), and our Facebook Fan Page.
+      </p>
+
+      {/* Analytics and Tracking */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Analytics and Tracking</h2>
+      <p className="mb-4">
+        We use Google Analytics and Firebase to collect information about how users interact with our Platform. These tools use cookies and similar technologies to collect and analyze information about your use of the Platform. The information collected may include your IP address, device information, browser type, and usage data. This data is used to improve our services and user experience. For more information, please review the <a href="https://policies.google.com/privacy" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.
+      </p>
+
+      {/* Advertising */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Advertising</h2>
+      <p className="mb-4">
+        We display ads on our Platform using Google Ads (AdSense). These ads may use cookies and similar technologies to serve relevant advertisements to you. For more information about how Google uses data when you use our Platform, please visit <a href="https://policies.google.com/technologies/ads" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Google Ads Policy</a>.
+      </p>
+
+      {/* Email Communications */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Email Communications</h2>
+      <p className="mb-4">
+        We may send emails to users manually for support, notifications, or important updates. We do not use automated email marketing tools at this time. You may opt out of non-essential communications at any time.
+      </p>
+
+      {/* Facebook Fan Page */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Facebook Fan Page</h2>
+      <p className="mb-4">
+        We operate a Facebook Fan Page: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a>. Any information you provide or interact with on our Facebook Fan Page is subject to Facebook's privacy policy as well as this Privacy Policy.
+      </p>
+
+      {/* Social Media Accounts */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Social Media Accounts</h2>
+      <ul className="list-disc ml-6 mb-4">
+        <li>Twitter: <a href="https://x.com/medgloss" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">@medgloss</a></li>
+        <li>Instagram: <a href="https://www.instagram.com/medgloss_official/" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">@medgloss_official</a></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/company/medgloss" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">MedGloss</a></li>
+        <li>Facebook: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a></li>
+      </ul>
+
+      {/* CCPA/CPRA, CalOPPA, GDPR, COPPA */}
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Legal Compliance</h2>
+      <h3 className="text-xl font-semibold mt-4 mb-2">CCPA & CPRA (California)</h3>
+      <p className="mb-4">
+        If you are a California resident, you have the right to know what personal information we collect, use, disclose, and sell. You have the right to request access to your personal information, request deletion, opt out of the sale of your personal information, and not be discriminated against for exercising your rights. We do not sell your personal information. For more information, please see the "Your Rights" section above.
+      </p>
+      <h3 className="text-xl font-semibold mt-4 mb-2">CalOPPA (California)</h3>
+      <p className="mb-4">
+        In compliance with CalOPPA, we disclose how we respond to Do Not Track signals: Our Platform does not respond to Do Not Track signals at this time. We do not authorize the collection of personally identifiable information from users for third-party use through advertising technologies.
+      </p>
+      <h3 className="text-xl font-semibold mt-4 mb-2">GDPR (EU/EEA/UK)</h3>
+      <p className="mb-4">
+        If you are located in the European Union, European Economic Area, or United Kingdom, you have the right to access, rectify, erase, restrict, or object to the processing of your personal data, and the right to data portability. You also have the right to lodge a complaint with a supervisory authority. We process your data in accordance with the GDPR.
+      </p>
+      <h3 className="text-xl font-semibold mt-4 mb-2">COPPA (Children Under 13)</h3>
+      <p className="mb-4">
+        We do not knowingly collect personal information from children under the age of 13 without parental consent. If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can take appropriate action.
+      </p>
+
       <p className="mt-8 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} MedGloss. All rights reserved.
       </p>

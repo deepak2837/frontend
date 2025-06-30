@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
@@ -15,7 +15,7 @@ export default function Contact() {
     setSubmitted(false);
     setError("");
     try {
-      const res = await fetch("https://medgloss.com/api/v1/contact", {
+      const res = await fetch(`${baseUrl}/api/v1/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
