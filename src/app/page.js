@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 
 // Dynamically import components
-const Aside = dynamic(() => import("@/components/AdSection/Aside"));
+const Aside = dynamic(() => import("@/components/AdSection/Aside"), { ssr: false });
 const TopAdSection = dynamic(() =>
-  import("@/components/AdSection/TopAdSection")
+  import("@/components/AdSection/TopAdSection"), { ssr: false }
 );
 const BottomAdSection = dynamic(() =>
-  import("@/components/AdSection/BottomAdSection")
+  import("@/components/AdSection/BottomAdSection"), { ssr: false }
 );
 const BlogCards = dynamic(() => import("@/components/BlogCards/BlogCards"));
 const CaseStudies = dynamic(() => import("@/components/CaseStudy/CaseStudy"));
