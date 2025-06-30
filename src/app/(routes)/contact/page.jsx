@@ -82,7 +82,7 @@ export default function Contact() {
           <p className="text-red-600 text-center mt-2">{error}</p>
         )}
         {submitted && (
-          <p className="text-green-600 text-center mt-2">Thank you for contacting us! We'll get back to you soon.</p>
+          <p className="text-green-600 text-center mt-2">Thank you for contacting us We will get back to you soon.</p>
         )}
       </form>
       <div className="mt-10">
