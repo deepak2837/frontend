@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
       <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
       <p className="mb-4">Last updated: June 2024</p>
       <p className="mb-4">
-        MedGloss ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, share, and store your information when you use our platform (the "Platform"). By accessing or using MedGloss, you agree to this Privacy Policy.
+        MedGloss ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, share, and store your information when you use our platform. By using MedGloss, you agree to this Privacy Policy.
       </p>
 
       {/* Applicability */}
@@ -119,7 +119,7 @@ export default function PrivacyPolicy() {
       </p>
 
       {/* Grievances & Contact */}
-      <h2 className="text-2xl font-semibold mt-8 mb-2">Grievances & Contact</h2>
+      <h2 className="text-2xl font-semibold mt-8 mb-2">Grievances and Contact</h2>
       <p className="mb-4">
         If you have questions or concerns about this Policy, or wish to exercise your rights, please contact us at:
       </p>
@@ -175,7 +175,7 @@ export default function PrivacyPolicy() {
       {/* Facebook Fan Page */}
       <h2 className="text-2xl font-semibold mt-8 mb-2">Facebook Fan Page</h2>
       <p className="mb-4">
-        We operate a Facebook Fan Page: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a>. Any information you provide or interact with on our Facebook Fan Page is subject to Facebook's privacy policy as well as this Privacy Policy.
+        We operate a Facebook Fan Page: <a href="https://facebook.com/medgloss_official" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">medgloss_official</a>. Any information you provide or interact with on our Facebook Fan Page is subject to Facebook;s privacy policy as well as this Privacy Policy.
       </p>
 
       {/* Social Media Accounts */}
@@ -189,7 +189,7 @@ export default function PrivacyPolicy() {
 
       {/* CCPA/CPRA, CalOPPA, GDPR, COPPA */}
       <h2 className="text-2xl font-semibold mt-8 mb-2">Legal Compliance</h2>
-      <h3 className="text-xl font-semibold mt-4 mb-2">CCPA & CPRA (California)</h3>
+      <h3 className="text-xl font-semibold mt-4 mb-2">CCPA and CPRA (California)</h3>
       <p className="mb-4">
         If you are a California resident, you have the right to know what personal information we collect, use, disclose, and sell. You have the right to request access to your personal information, request deletion, opt out of the sale of your personal information, and not be discriminated against for exercising your rights. We do not sell your personal information. For more information, please see the "Your Rights" section above.
       </p>

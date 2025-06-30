@@ -34,7 +34,7 @@ export default function Contact() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10 text-gray-900 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6 text-center">Contact Us</h1>
-      <p className="mb-4 text-center">We'd love to hear from you! Reach out with your questions, feedback, or partnership inquiries.</p>
+      <p className="mb-4 text-lg text-center">We&apos;d love to hear from you! Please fill out the form below and we&apos;ll get back to you as soon as possible.</p>
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div>
           <label className="block mb-1 font-semibold" htmlFor="name">Name</label>
@@ -98,7 +98,9 @@ export default function Contact() {
           <li>LinkedIn: <a href="https://www.linkedin.com/company/medgloss" className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">MedGloss</a></li>
         </ul>
       </div>
+      <p className="text-gray-600 text-sm mt-4">We respect your privacy and won&apos;t share your information.</p>
       <p className="mt-8 text-center text-gray-500 text-sm">© {new Date().getFullYear()} MedGloss. All rights reserved.</p>
+      <p className="mt-4 text-center text-gray-500 text-sm">Don&apos;t hesitate to reach out if you have any questions or feedback!</p>
     </div>
   );
-} 
+}
