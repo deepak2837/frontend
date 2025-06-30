@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media (min-width: 640px) {
+  .main {
+    margin-left: 100px !important;
+    margin-right: 100px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main {
+    margin-left: 260px !important;
+    margin-right: 260px !important;
+  }
+}
+
+.post-content .ql-video {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  .input-field {
+    @apply w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  }
+
+  .fab-btn {
+    @apply bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition duration-300 fixed bottom-6 right-6;
+  }
+
+  .icon-btn {
+    @apply p-2 rounded-full transition duration-300;
+  }
+}
+
+/* Quill Editor Content Styles */
+.quill-content {
+  /* Basic text styling */
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #060607;
+}
+
+.quill-content h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 1.5rem 0;
+}
+
+.quill-content h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 1.25rem 0;
+}
+
+.quill-content p {
+  margin: 1rem 0;
+}
+
+.quill-content ul,
+.quill-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.quill-content ul {
+  list-style-type: disc;
+}
+
+.quill-content ol {
+  list-style-type: decimal;
+}
+
+.quill-content blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.quill-content pre {
+  background-color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+}
+
+.quill-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+}
+
+.quill-content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
