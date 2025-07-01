@@ -43,16 +43,18 @@ export default function RootLayout({ children, Component, pageProps }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div>
+        <div className="min-h-screen flex flex-col">
           <SecurityWrapper />
           <Header />
           {/* <Aside/> */}
           {/* <TopAdSection/> */}
-          <main className=" bg-white min-h-screen  z-10">{children}</main>
+          <main className="flex-1 bg-white z-10 w-full">
+            {children}
+          </main>
 
           {/* <BottomAdSection/> */}
-          <footer className="z-10 mt-5 relative bottom-0">
-            <NewFooter />{" "}
+          <footer className="z-10 mt-auto w-full">
+            <NewFooter />
           </footer>
         </div>
         <ToastProvider />

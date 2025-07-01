@@ -74,7 +74,7 @@ export default function ModernFooter() {
           </div>
 
           {/* Contact Info - compact, stacked on mobile */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-x-4 gap-y-0.5 text-xs mt-1 mb-1">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-x-4 gap-y-0.5 text-xs mt-1 mb-0">
             <a href="mailto:help@medgloss.com" className="hover:underline text-blue-100" aria-label="Email">
               help@medgloss.com
             </a>

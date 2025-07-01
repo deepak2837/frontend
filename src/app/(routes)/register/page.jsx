@@ -43,8 +43,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-main w-full">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+    <div className="flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-[#FE6B8B] to-[#FF8E53] rounded-2xl pt-8">
+      <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
         <div className="flex flex-col items-center mb-4">
           <Image
             src="/MedglossLogo.svg"
