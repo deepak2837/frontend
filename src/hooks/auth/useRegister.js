@@ -35,11 +35,26 @@ export default function useRegister() {
       if (response) {
         toast.success("Registered successfully!");
         setTimeout(() => router.push("/login"), 2000);
+        return { success: true };
       } else {
         toast.error("Something went wrong...");
+        return { success: false };
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed.");
+      console.log("Register error:", error.response);
+
+      const message =
+        typeof error.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Registration failed.";
+
+      if (message === "User already registered please try to log in") {
+        return { success: false, message };
+      }
+      toast.error(message);
+      return { success: false, message };
     } finally {
       setLoading(false);
     }

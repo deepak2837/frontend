@@ -57,14 +57,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 w-full h-full bg-white">
-      <div className="flex-1 flex items-center justify-center px-2 sm:px-4">
+   
+      <div className="flex-1 flex items-center justify-center">
         <div
-          className="bg-main px-10 py-8 sm:px-4 sm:py-10 rounded-2xl shadow-xl w-full max-w-xs relative border border-gray-300"
-          style={{
-            marginTop: "100px !important",
-            zIndex: 50,
-          }}
+          className="bg-main px-10 py-8 sm:px-4 sm:py-10 rounded-2xl shadow-xl w-full max-w-xs relative border border-gray-300 loginBoxOverride"
         >
           <div className="flex flex-col items-center mb-6">
             <Image
@@ -132,7 +128,8 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </div>
+
+   
   );
 };
 
