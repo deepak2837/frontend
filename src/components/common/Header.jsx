@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import MedglossLogo from "./Medgloss";
 import Image from "next/image";
@@ -24,14 +24,34 @@ const settings = [
 function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user, logout, initializeAuth } = useAuthStore();
+
+  // Validate auth state on component mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      const isValid = initializeAuth();
+      if (!isValid) {
+        console.warn("Invalid auth state in Header, clearing...");
+        logout();
+      }
+    }
+  }, [isAuthenticated, initializeAuth, logout]);
 
   const toggleNavMenu = () => setIsNavOpen((prev) => !prev);
   const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
 
   const handleLogout = async () => {
-    await logout();
-    toast.success("Logout Successfully.");
+    try {
+      const success = await logout();
+      if (success) {
+        toast.success("Logout successful!");
+      } else {
+        toast.info("Logout completed");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Logout failed. Please try again.");
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ import Header from "@/components/common/Header";
 import NewFooter from "@/components/common/NewFooter";
 import ToastProvider from "@/components/Toast";
 import SecurityWrapper from "@/components/screenshot/SecurityWrapper";
+import AuthInitializer from "@/components/common/AuthInitializer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,6 +46,7 @@ export default function RootLayout({ children, Component, pageProps }) {
       >
         <div className="min-h-screen flex flex-col">
           <SecurityWrapper />
+          <AuthInitializer />
           <Header />
           {/* <Aside/> */}
           {/* <TopAdSection/> */}
