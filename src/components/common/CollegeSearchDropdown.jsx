@@ -103,7 +103,7 @@ const CollegeSearchDropdown = ({ value, onChange, placeholder = "Search for coll
               ))}
               {searchTerm && !filteredColleges.includes(searchTerm) && (
                 <div className="px-4 py-2 text-sm text-gray-500 border-t border-gray-200">
-                  Press Enter to use: "{searchTerm}"
+                  Press Enter to use: &quot;{searchTerm}&quot;
                 </div>
               )}
             </>
