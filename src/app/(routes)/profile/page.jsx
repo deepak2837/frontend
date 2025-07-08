@@ -6,9 +6,67 @@ import LineLoader from "@/components/common/Loader";
 import useAuthStore from "@/store/authStore";
 import { toast } from "react-toastify";
 import useProfile from "@/hooks/profile/useProfile";
+import CollegeSearchDropdown from "@/components/common/CollegeSearchDropdown";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import "../../phone-input-custom.css";
+import { normalizePhoneNumber } from "@/utils/phone";
+
+const popularCourses = [
+  "Preparing for Exam",
+  "MBBS",
+  "MD",
+  "BDS",
+  "BAMS",
+  "BHMS",
+  "BPT",
+  "BOT",
+  "BSc Nursing",
+  "BSc Medical Lab Technology",
+  "BSc Radiology",
+  "BSc Optometry",
+  "BSc Physiotherapy",
+  "BSc Occupational Therapy",
+  "BSc Respiratory Therapy",
+  "BSc Cardiac Technology",
+  "BSc Dialysis Technology",
+  "BSc Operation Theatre Technology",
+  "BSc Anesthesia Technology",
+  "BSc Emergency Medical Technology",
+  "BSc Medical Imaging Technology"
+];
+
+const popularExams = [
+  "NEET PG",
+  "NEET UG",
+  "AIIMS PG",
+  "JIPMER PG",
+  "FMGE",
+  "USMLE Step 1",
+  "USMLE Step 2 CK",
+  "USMLE Step 2 CS",
+  "PLAB",
+  "MCAT",
+  "GRE",
+  "IELTS",
+  "TOEFL",
+  "Other"
+];
+
+const yearOptions = [
+  { label: "First Year", value: 1 },
+  { label: "Second Year", value: 2 },
+  { label: "Third Year", value: 3 },
+  { label: "Fourth Year", value: 4 },
+  { label: "Fifth Year", value: 5 },
+  "Sixth Year",
+  { label: "Sixth Year", value: 6 }
+];
+
+const experienceOptions = Array.from({ length: 20 }, (_, i) => ({ label: `${i+1} ${i+1 === 1 ? 'year' : 'years'}`, value: i+1 })).concat({ label: "20+ years", value: "20+" });
 
 const Profile = () => {
-  const { getUser } = useAuthStore();
+  const { getUser, updateUser } = useAuthStore();
   const user = getUser();
   const { onUpdateProfile } = useProfile();
 
@@ -25,10 +83,11 @@ const Profile = () => {
     city: "",
     mobileNumber: "",
   });
+  const [showCustomCourse, setShowCustomCourse] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      // Prevent unnecessary state updates
+    console.log("[Profile useEffect] user:", user);
+    if (user && !isEditing) { // Only update if not editing
       setProfileData((prevData) => {
         const newData = {
           ...prevData,
@@ -39,18 +98,19 @@ const Profile = () => {
           speciality: user.role === "doctor" ? user.speciality : "",
           experience: user.role === "doctor" ? user.experience : "",
           mobileNumber: user.mobileNumber || "",
+          examName: user.role === "student" ? user.examName : "",
           city: user.city || "",
         };
-
         // Only update state if data has changed
         if (JSON.stringify(prevData) !== JSON.stringify(newData)) {
+          console.log("[Profile useEffect] Updating profileData:", newData);
           return newData;
         }
         return prevData;
       });
     }
     setIsLoading(false);
-  }, [user]); // Ensure this only runs when `user` changes
+  }, [user, isEditing]); // Ensure this only runs when `user` changes
 
   // Generate last 7 years
   const currentYear = new Date().getFullYear();
@@ -66,45 +126,130 @@ const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let processedValue = value;
+    if (name === 'course' && showCustomCourse) {
+      processedValue = value.replace(/[0-9]/g, '');
+    }
+    console.log(`[handleInputChange] name: ${name}, value: ${value}, processedValue: ${processedValue}`);
+    setProfileData((prev) => ({ ...prev, [name]: processedValue }));
+  };
 
-    // Mobile number validation
-    if (name === "mobileNumber") {
-      // Only allow numeric values and max length of 10
-      if (!/^\d*$/.test(value) || value.length > 10) {
+  const handlePhoneChange = (value) => {
+    console.log("[handlePhoneChange] value:", value);
+    setProfileData((prev) => ({ ...prev, mobileNumber: value || "" }));
+  };
+
+  const handleCourseChange = (e) => {
+    const selectedCourse = e.target.value;
+    console.log("[handleCourseChange] selectedCourse:", selectedCourse);
+    if (selectedCourse === "custom") {
+      setShowCustomCourse(true);
+      setProfileData((prev) => ({ ...prev, course: "", year: "", examName: "" }));
+    } else if (selectedCourse === "Preparing for Exam") {
+      setShowCustomCourse(false);
+      setProfileData((prev) => ({ ...prev, course: selectedCourse, year: 0, examName: "" }));
+    } else {
+      setShowCustomCourse(false);
+      setProfileData((prev) => ({ ...prev, course: selectedCourse, year: "", examName: "" }));
+    }
+  };
+
+  const handleYearChange = (e) => {
+    const selectedYear = parseInt(e.target.value);
+    console.log("[handleYearChange] selectedYear:", selectedYear);
+    setProfileData((prev) => ({ ...prev, year: selectedYear }));
+  };
+
+  const handleSave = async () => {
+    // Validation (same as register page)
+    if (user.role === "student" || user.role === "doctor") {
+      // Validate mobile number
+      if (!profileData.mobileNumber) {
+        toast.error("Mobile number is required");
+        return;
+      }
+      if (!isValidPhoneNumber(profileData.mobileNumber)) {
+        toast.error("Please enter a valid mobile number");
         return;
       }
     }
-
-    setProfileData({
-      ...profileData,
-      [name]: value,
-    });
+    if (user.role === "student") {
+      if (!profileData.collegeName.trim()) {
+        toast.error("College name is required for students");
+        return;
+      }
+      if (!profileData.course.trim()) {
+        toast.error("Course is required for students");
+        return;
+      }
+      if (showCustomCourse && !profileData.course.trim()) {
+        toast.error("Please enter your course name");
+        return;
+      }
+      if (profileData.course !== "Preparing for Exam") {
+        const yearNum = profileData.year;
+        if (!yearNum || yearNum < 1 || yearNum > 6) {
+          toast.error("Please select a valid year of study");
+          return;
+        }
+      }
+      if (profileData.course === "Preparing for Exam") {
+        if (!profileData.examName || !profileData.examName.trim()) {
+          toast.error("Please select an exam name");
+          return;
+        }
+      }
+    }
+    if (user.role === "doctor") {
+      if (!profileData.hospitalName.trim()) {
+        toast.error("Hospital name is required for doctors");
+        return;
+      }
+      if (!profileData.speciality.trim()) {
+        toast.error("Speciality is required for doctors");
+        return;
+      }
+      if (!profileData.experience) {
+        toast.error("Years of experience is required for doctors");
+        return;
+      }
+    }
+    // Normalize phone number
+    const normalizedProfile = { ...profileData, mobileNumber: normalizePhoneNumber(profileData.mobileNumber) };
+    try {
+      const response = await onUpdateProfile(normalizedProfile);
+      console.log("[handleSave] response:", response);
+      console.log("[handleSave] response.user:", response.status);
+      if (response?.status === 200) {
+        // If backend returns a new token, update cookie
+        if (response.token) {
+          await fetch("/api/set-cookie", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: response.token }),
+          });
+        }
+        updateUser(response.user);
+        setProfileData((prev) => ({ ...prev, examName: response.user.examName || "" }));
+        setIsEditing(false);
+        toast.success("Profile updated successfully");
+        setTimeout(() => {
+          window.location.href = "/profile";
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      toast.error("Failed to update profile");
+    }
   };
-
   const toggleEdit = async () => {
     if (isEditing) {
-      try {
-        const response = await onUpdateProfile(profileData);
-        if (response.status === 200) {
-          // Ensure updateUser does not cause unintended side effects
-          updateUser({
-            ...user,
-            ...profileData,
-          });
-
-          setIsEditing(false);
-          toast.success("Profile updated successfully");
-        }
-      } catch (error) {
-        console.error("Failed to update profile:", error);
-        toast.error("Failed to update profile");
-      }
+      await handleSave();
     } else {
       setIsEditing(true);
     }
   };
-
-  if (isLoading) {
+        if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <LineLoader />
@@ -124,6 +269,8 @@ const Profile = () => {
       </div>
     );
   }
+
+  console.log("[Profile render] profileData:", profileData, "isEditing:", isEditing);
 
   // Determine avatar based on user role
   const avatarSrc = user.role === "doctor" ? "/doctor.jpg" : "/student.jpg";
@@ -196,20 +343,9 @@ const Profile = () => {
                   </span>
                   <div>
                     <p className="text-sm text-gray-500">Mobile Number</p>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        name="mobileNumber"
-                        value={profileData.mobileNumber}
-                        onChange={handleInputChange}
-                        className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        maxLength={10}
-                      />
-                    ) : (
-                      <p className="font-medium">
-                        {profileData.mobileNumber || "Not specified"}
-                      </p>
-                    )}
+                    <p className="font-medium">
+                      {profileData.mobileNumber || "Not specified"}
+                    </p>
                   </div>
                 </div>
 
@@ -226,6 +362,7 @@ const Profile = () => {
                         value={profileData.city}
                         onChange={handleInputChange}
                         className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        autoComplete="off"
                       />
                     ) : (
                       <p className="font-medium">
@@ -250,19 +387,13 @@ const Profile = () => {
                     <div>
                       <p className="text-sm text-gray-500">College Name</p>
                       {isEditing ? (
-                        <select
-                          name="collegeName"
+                        <CollegeSearchDropdown
+                          options={colleges}
                           value={profileData.collegeName}
-                          onChange={handleInputChange}
-                          className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                          <option value="">Select College</option>
-                          {colleges.map((college) => (
-                            <option key={college} value={college}>
-                              {college}
-                            </option>
-                          ))}
-                        </select>
+                          onChange={val => handleInputChange({ target: { name: "collegeName", value: val } })}
+                          placeholder="Select College"
+                          name="collegeName"
+                        />
                       ) : (
                         <p className="font-medium">
                           {profileData.collegeName || "Not specified"}
@@ -277,15 +408,16 @@ const Profile = () => {
                           <select
                             name="course"
                             value={profileData.course}
-                            onChange={handleInputChange}
+                            onChange={handleCourseChange}
                             className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           >
                             <option value="">Select Course</option>
-                            {courses.map((course) => (
+                            {popularCourses.map((course) => (
                               <option key={course} value={course}>
                                 {course}
                               </option>
                             ))}
+                            <option value="custom">Custom Course</option>
                           </select>
                         ) : (
                           <p className="font-medium">
@@ -293,28 +425,44 @@ const Profile = () => {
                           </p>
                         )}
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Year</p>
-                        {isEditing ? (
+                      {/* Show year dropdown only if course is not 'Preparing for Exam' */}
+                      {isEditing && profileData.course !== "Preparing for Exam" && (
+                        <div>
+                          <p className="text-sm text-gray-500">Year</p>
                           <select
                             name="year"
                             value={profileData.year}
-                            onChange={handleInputChange}
+                            onChange={handleYearChange}
                             className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
                           >
                             <option value="">Select Year</option>
-                            {years.map((year) => (
-                              <option key={year} value={year}>
-                                {year}
+                            {yearOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
                               </option>
                             ))}
                           </select>
-                        ) : (
-                          <p className="font-medium">
-                            {profileData.year || "Not specified"}
-                          </p>
-                        )}
-                      </div>
+                        </div>
+                      )}
+                      {/* Show exam name dropdown only if course is 'Preparing for Exam' */}
+                      {isEditing && profileData.course === "Preparing for Exam" && (
+                        <div>
+                          <p className="text-sm text-gray-500">Exam Name</p>
+                          <select
+                            name="examName"
+                            value={profileData.examName}
+                            onChange={handleInputChange}
+                            className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          >
+                            <option value="">Select exam</option>
+                            {popularExams.map((exam) => (
+                              <option key={exam} value={exam}>
+                                {exam}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
                     </div>
                   </>
                 )}
@@ -367,9 +515,9 @@ const Profile = () => {
                           className="border border-gray-300 rounded-md px-3 py-1 mt-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           <option value="">Select Experience</option>
-                          {experiences.map((exp) => (
-                            <option key={exp} value={exp}>
-                              {exp} {exp === 1 ? "year" : "years"}
+                          {experienceOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
                             </option>
                           ))}
                         </select>

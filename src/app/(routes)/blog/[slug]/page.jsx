@@ -5,11 +5,14 @@ import LineLoader from "@/components/common/Loader";
 import { useParams } from "next/navigation";
 import TopAdSection from "@/components/AdSection/TopAdSection";
 import Aside from "@/components/AdSection/Aside";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function BlogPost() {
   const params = useParams();
   const { data: blog, isLoading, error } = useGetBlogDetails(params?.slug);
   const [isLiked, setIsLiked] = useState(false);
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -42,11 +45,20 @@ export default function BlogPost() {
         <TopAdSection className="sticky top-0 z-50" />
       </div>
 
-      <div className="w-full px-4 py-8 md:max-w-[calc(100%-520px)] md:mx-auto">
+      <div className="w-full px-0 sm:px-4 py-4 lg:max-w-[calc(100%-520px)] lg:mx-auto">
         <article className="bg-white rounded-lg shadow-sm p-6">
           {/* Blog Header */}
           <header className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-center">{blog?.title}</h1>
+            <button
+              onClick={() => router.back()}
+              style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}
+              className="mb-2 px-4 py-1.5 text-sm rounded flex items-center gap-1 font-medium text-white shadow hover:opacity-90 transition"
+              aria-label="Go back"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              Back
+            </button>
+            <h1 className="text-2xl sm:text-3xl font-semibold mb-2 text-center truncate">{blog?.title}</h1>
             <div className="flex gap-4 text-sm text-gray-600 mb-4">
               <span>{new Date(blog?.createdAt).toLocaleDateString()}</span>
               <span>• {blog?.readTime} min read</span>
@@ -65,10 +77,14 @@ export default function BlogPost() {
           {/* Cover Image */}
           {blog?.coverImage && blog.coverImage !== "no_image" && (
             <div className="mb-8">
-              <img
+              <Image
                 src={blog.coverImage}
                 alt={blog.title}
-                className="w-full h-[400px] object-cover rounded-lg"
+                width={800}
+                height={400}
+                className="w-full max-h-[200px] sm:max-h-[300px] md:max-h-[400px] object-cover rounded-lg mx-auto"
+                style={{ width: "100%", height: "auto" }}
+                priority
               />
             </div>
           )}

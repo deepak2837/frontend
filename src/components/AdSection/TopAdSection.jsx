@@ -7,7 +7,7 @@ const TopAdSection = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        //(window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (e) {
         console.error("AdSense error:", e);
       }
