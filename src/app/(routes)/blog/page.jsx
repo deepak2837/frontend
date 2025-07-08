@@ -123,21 +123,21 @@ export default function Page() {
 
       {/* Filters & Search Bar */}
       <form
-        className="w-full max-w-6xl mx-auto px-4 mb-8 flex flex-wrap gap-4 justify-center items-center rounded-xl py-4 shadow-md"
+        className="w-full max-w-6xl mx-auto px-4 mb-8 flex flex-wrap gap-3 sm:gap-4 justify-center items-center rounded-xl py-4 shadow-md"
         style={{background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'}} 
         onSubmit={handleSearch}
       >
-        <div className="flex flex-row gap-2 flex-wrap items-center w-full md:w-auto justify-center">
+        <div className="flex flex-col sm:flex-row gap-2 flex-wrap items-center w-full justify-center">
           <input
             type="text"
             placeholder="Search blogs, tags, or content..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-64 px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white shadow-sm"
+            className="w-full sm:w-64 px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white shadow-sm"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg font-semibold shadow hover:bg-pink-400 transition"
+            className="w-full sm:w-auto px-4 py-2 bg-pink-500 text-white rounded-lg font-semibold shadow hover:bg-pink-400 transition"
           >
             Search
           </button>
@@ -145,7 +145,7 @@ export default function Page() {
         <select
           value={filters.subject}
           onChange={e => handleFilterChange('subject', e.target.value)}
-          className="px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
+          className="w-full sm:w-auto px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
         >
           <option value="">Subject</option>
           {filterOptions.subjects.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -153,7 +153,7 @@ export default function Page() {
         <select
           value={filters.difficulty}
           onChange={e => handleFilterChange('difficulty', e.target.value)}
-          className="px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
+          className="w-full sm:w-auto px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
         >
           <option value="">Difficulty</option>
           {filterOptions.difficulties.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -161,7 +161,7 @@ export default function Page() {
         <button
           type="button"
           onClick={() => setSortBy(sortBy === 'trending' ? '' : 'trending')}
-          className={`px-4 py-2 rounded-lg font-semibold shadow transition ${
+          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-semibold shadow transition ${
             sortBy === 'trending' 
               ? 'bg-pink-500 text-white' 
               : 'bg-white text-pink-700 border border-pink-200 hover:bg-pink-50'
@@ -172,7 +172,7 @@ export default function Page() {
         <button
           type="button"
           onClick={() => setSortBy(sortBy === 'featured' ? '' : 'featured')}
-          className={`px-4 py-2 rounded-lg font-semibold shadow transition ${
+          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-semibold shadow transition ${
             sortBy === 'featured' 
               ? 'bg-pink-500 text-white' 
               : 'bg-white text-pink-700 border border-pink-200 hover:bg-pink-50'
@@ -182,11 +182,11 @@ export default function Page() {
         </button>
       </form>
 
-      {/* Main content - Full width on mobile */}
-      <div className="w-full px-4 py-4 md:max-w-[calc(100%-520px)] md:mx-auto">
+      {/* Main content - Responsive layout */}
+      <div className="w-full px-4 py-4 lg:max-w-[calc(100%-520px)] lg:mx-auto">
         <div className="grid grid-cols-1 gap-8">
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-2">
               {posts.map((post) => (
                 <BlogCard key={post._id} post={post} />
               ))}
