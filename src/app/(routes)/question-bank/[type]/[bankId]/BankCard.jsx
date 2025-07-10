@@ -85,12 +85,16 @@ const renderBankImage = (imageData) => {
   );
 };
 
+function getDeterministicEmoji(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return emojiList[Math.abs(hash) % emojiList.length];
+}
+
 export default function BankCard({ bank, typeParam }) {
-  // Generate a random emoji for each card
-  const randomEmoji = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * emojiList.length);
-    return emojiList[randomIndex];
-  }, []);
+  const emoji = getDeterministicEmoji(bank._id || bank.title || "");
 
   return (
     <Link
@@ -179,7 +183,7 @@ export default function BankCard({ bank, typeParam }) {
               aria-label="Decorative Emoji"
               className="text-sm lg:text-lg"
             >
-              {randomEmoji}
+              {emoji}
             </span>
           </div>
 
