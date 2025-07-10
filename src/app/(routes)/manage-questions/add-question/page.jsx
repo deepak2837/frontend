@@ -22,6 +22,8 @@ import {
 } from "@mui/icons-material";
 import useAuthStore from "@/store/authStore";
 
+import "react-quill-new/dist/quill.snow.css";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Constants (moved to top level for better organization)

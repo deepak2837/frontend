@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 
 import styles from './Aside.module.css';
 
-const AdSenseClientOnly = dynamic(() => import("./AdSenseClientOnly"), { ssr: false });
+const AdSenseClientOnly = dynamic(() => import("./AdSenseClientOnly"), 
+// { ssr: false }
+);
 
 const Aside = () => {
   useEffect(() => {

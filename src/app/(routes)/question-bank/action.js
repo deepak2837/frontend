@@ -51,12 +51,7 @@ export async function fetchQuestionBankData(id, page = 1, filters = {}) {
 }
 
 export async function recordAttempt(formData) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("authToken")?.value;
-
-  if (!token) {
-    return { success: false, error: "Unauthorized" };
-  }
+  
 
   try {
     const response = await fetch(
@@ -64,7 +59,7 @@ export async function recordAttempt(formData) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+   
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

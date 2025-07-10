@@ -1,22 +1,173 @@
 // No "use client" directive needed for SSG/SSR components
 
 import React from "react";
-// Removed unused imports: useState, useEffect, motion, AnimatePresence
 import Image from "next/image";
-import Link from "next/link"; // Import Link for navigation if needed, or use simple <a> for anchors
+import Link from "next/link";
 
-// Corrected Image Paths (assuming they are directly in the public folder)
-// If they are in subfolders, adjust accordingly (e.g., /images/img1.jpg)
+
+// Import images
 import VirtualSurgeryImage from "../../../../public/img1.jpg";
-import HeroBackgroundImage from "../../../../public/img2.jpg"; // Assuming this exists
-import AnatomyModelImage from "../../../../public/img15.jpeg"; // Assuming this exists
-import SurgicalSimImage from "../../../../public/img4.jpg"; // Assuming this exists
-import TeamworkImage from "../../../../public/img8.jpeg"; // Assuming this exists
-import VRHeadsetImage from "../../../../public/img6.jpg"; // Assuming this exists
-import FutureTechImage from "../../../../public/img12.jpeg"; // Assuming this exists
+import HeroBackgroundImage from "../../../../public/img2.jpg";
+import AnatomyModelImage from "../../../../public/img15.jpeg";
+import SurgicalSimImage from "../../../../public/img4.jpg";
+import TeamworkImage from "../../../../public/img8.jpeg";
+import VRHeadsetImage from "../../../../public/img6.jpg";
+import FutureTechImage from "../../../../public/img12.jpeg";
 import placeholderAvatar from "../../../../public/doctor.jpg";
 
-// --- Color Constants ---
+// SEO Metadata
+export const metadata = {
+  title: "Virtual Surgery Education - Immersive Medical Training with VR Technology",
+  description: "Discover how Virtual Reality is transforming medical education with risk-free surgical training, 3D anatomy exploration, and immersive patient simulations. Learn about VR applications in healthcare education.",
+  keywords: "virtual surgery, medical education, VR training, surgical simulation, medical VR, anatomy education, healthcare technology, medical students, surgical training, virtual reality medicine",
+  authors: [{ name: "Medical Education Team" }],
+  creator: "Medical Education Platform",
+  publisher: "MedGloss",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://medgloss.com"),
+  alternates: {
+    canonical: "/virtual-surgery",
+  },
+  openGraph: {
+    title: "Virtual Surgery Education - Revolutionary Medical Training",
+    description: "Experience the future of medical education with immersive Virtual Reality surgical training. Safe, effective, and accessible learning for medical students and healthcare professionals.",
+    url: "https://medgloss.com/virtual-surgery",
+    siteName: "MedGloss",
+    images: [
+      {
+        url: "https://medgloss.com/_next/static/media/img2.5c41c1be.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Virtual Surgery Education - Medical VR Training",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Virtual Surgery Education - Revolutionary Medical Training",
+    description: "Experience the future of medical education with immersive Virtual Reality surgical training. Safe, effective, and accessible learning.",
+    images: ["https://medgloss.com/_next/static/media/img2.5c41c1be.jpg"],
+    creator: "@medgloss", // optional if you own the handle
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+    yahoo: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+    bing: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+  },
+};
+
+// Structured Data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "MedGloss",
+  "description": "Leading platform for Virtual Reality medical education and surgical training.",
+  "url": "https://medgloss.com/virtual-surgery",
+  "logo": "https://medgloss.com/_next/image?url=%2Fmedglosslogo-photoaidcom-cropped.png&w=1920&q=75",
+  "sameAs": [
+    "https://x.com/medgloss",
+    "https://www.linkedin.com/company/medgloss",
+    "https://www.instagram.com/medgloss_official"
+  ],
+  "hasOfferingCatalog": {
+    "@type": "OfferingCatalog",
+    "name": "Virtual Surgery Training Programs",
+    "itemListElement": [
+      {
+        "@type": "Course",
+        "name": "Anatomy Exploration in VR",
+        "description": "Interactive 3D anatomical models for enhanced spatial understanding",
+        "provider": {
+          "@type": "Organization",
+          "name": "MedGloss"
+        }
+      },
+      {
+        "@type": "Course",
+        "name": "Surgical Skill Training",
+        "description": "Risk-free surgical procedure practice in virtual environments",
+        "provider": {
+          "@type": "Organization",
+          "name": "MedGloss"
+        }
+      },
+      {
+        "@type": "Course",
+        "name": "Diagnostic Practice",
+        "description": "Virtual patient interactions and diagnostic reasoning training",
+        "provider": {
+          "@type": "Organization",
+          "name": "MedGloss"
+        }
+      }
+    ]
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Sarah Chen"
+      },
+      "reviewBody": "Virtual surgery training reduced my procedural errors by 40% during my clinical rotations. The spatial awareness I gained was invaluable.",
+      "name": "Third Year Surgical Resident Review"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Prof. James Rodriguez"
+      },
+      "reviewBody": "As an anatomy instructor, VR has transformed how I teach complex structures. Students grasp spatial relationships much faster now.",
+      "name": "Faculty Review on VR Teaching"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Mia Jefferson"
+      },
+      "reviewBody": "The ability to practice rare cases repeatedly in VR gave me confidence when I encountered similar situations in clinical practice.",
+      "name": "Student Experience with VR Training"
+    }
+  ]
+};
+
+// Color constants
 const pinkColor = "#FE6B8B";
 const orangeColor = "#FF8E53";
 const lightPinkBorder = "#FED7DD";
@@ -24,9 +175,8 @@ const lightPinkBg = "#FFF0F3";
 const lightOrangeBg = "#FFF4EC";
 const deepBlue = "#3A5B84";
 
-// --- Reusable Components (Now Static) ---
+// Reusable Components
 const Section = ({ children, className = "", id = "" }) => (
-  // Note: The original had an empty {" "} inside. Removed it.
   <section id={id} className={`py-16 px-6 lg:py-24 ${className}`}>
     <div className="max-w-6xl mx-auto">{children}</div>
   </section>
@@ -40,8 +190,6 @@ const GradientText = ({ children, className = "" }) => (
   </span>
 );
 
-// Static Button Component (if simple styling is needed)
-// Or use direct Tailwind classes on <a> or <button> tags
 const StaticButtonClasses = (primary = true) =>
   `${
     primary
@@ -50,28 +198,26 @@ const StaticButtonClasses = (primary = true) =>
   } px-6 py-3 rounded-lg font-medium shadow-sm hover:shadow-md transition-all text-sm md:text-base`;
 
 const Card = ({ icon, title, description, className = "", image = null }) => (
-  // Replaced motion.div with div
-  <div
-    className={`bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow h-full flex flex-col overflow-hidden group ${className}`} // Added group for potential image hover
+  <article
+    className={`bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow h-full flex flex-col overflow-hidden group ${className}`}
   >
     {image && (
       <div className="h-48 w-full -mt-6 -mx-6 mb-6 overflow-hidden relative">
         <Image
           src={image}
           alt={title}
-          fill // Use fill prop instead of layout="fill"
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw" // Example sizes, adjust as needed
-          className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105" // Use className for object-fit
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
         />
       </div>
     )}
     <div className={`text-[${pinkColor}] mb-4 ${image ? "mt-0" : "mt-0"}`}>
-      {icon && React.cloneElement(icon, { className: "h-8 w-8" })}{" "}
-      {/* Ensure icon size */}
+      {icon && React.cloneElement(icon, { className: "h-8 w-8" })}
     </div>
     <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
     <p className="text-gray-600 text-sm flex-grow">{description}</p>
-  </div>
+  </article>
 );
 
 const FeatureWithImage = ({
@@ -81,22 +227,20 @@ const FeatureWithImage = ({
   reversed = false,
   icon = null,
 }) => (
-  <div
+  <article
     className={`grid md:grid-cols-2 items-center gap-8 lg:gap-12 mb-12 lg:mb-16`}
   >
-    {/* Replaced motion.div with div */}
     <div className={`flex-1 ${reversed ? "md:order-2" : "md:order-1"}`}>
       <div className="relative h-64 md:h-80 lg:h-96 rounded-xl overflow-hidden shadow-xl group">
         <Image
           src={image}
           alt={title}
-          fill // Use fill prop
-          sizes="(max-width: 768px) 100vw, 50vw" // Example sizes
-          className="object-cover transform transition-transform duration-500 group-hover:scale-105" // Use className for object-fit
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover transform transition-transform duration-500 group-hover:scale-105"
         />
       </div>
     </div>
-    {/* Replaced motion.div with div */}
     <div
       className={`flex-1 flex flex-col justify-center ${
         reversed ? "md:order-1" : "md:order-2"
@@ -108,28 +252,25 @@ const FeatureWithImage = ({
             {React.cloneElement(icon, { className: "h-6 w-6" })}
           </div>
         )}
-        <h3 className="text-2xl lg:text-3xl font-bold text-gray-800">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-800">
           {title}
-        </h3>
+        </h2>
       </div>
       <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
-  </div>
+  </article>
 );
 
-const TestimonialCard = (
-  { quote, author, role } // Removed image prop as it wasn't used with a specific image source
-) => (
-  // Replaced motion.div with div
-  <div className="bg-white p-6 rounded-xl shadow-lg h-full flex flex-col">
+const TestimonialCard = ({ quote, author, role }) => (
+  <article className="bg-white p-6 rounded-xl shadow-lg h-full flex flex-col">
     <div className="flex items-center mb-4">
       <div className="w-12 h-12 rounded-full overflow-hidden mr-4 relative flex-shrink-0">
         <Image
-          src={placeholderAvatar} // Using the defined placeholder
-          alt={author}
-          fill // Use fill prop
-          sizes="48px" // Specify size for small images
-          className="object-cover" // Use className for object-fit
+          src={placeholderAvatar}
+          alt={`${author} - ${role}`}
+          fill
+          sizes="48px"
+          className="object-cover"
         />
       </div>
       <div>
@@ -137,28 +278,23 @@ const TestimonialCard = (
         <p className="text-sm text-gray-500">{role}</p>
       </div>
     </div>
-    <p className="text-gray-600 italic flex-grow">{`"${quote}"`}</p>{" "}
-    {/* Added quotes */}
-  </div>
+    <blockquote className="text-gray-600 italic flex-grow">{`"${quote}"`}</blockquote>
+  </article>
 );
 
 const IconBox = ({ number, label, icon }) => (
-  // Replaced motion.div with div
   <div className="text-center p-6 bg-white rounded-xl shadow-md flex flex-col items-center h-full hover:shadow-lg transition-shadow">
     <div
       className={`inline-flex p-4 rounded-full bg-[${pinkColor}]/10 text-[${pinkColor}] mb-4`}
     >
-      {React.cloneElement(icon, { className: "h-10 w-10" })}{" "}
-      {/* Ensure icon size */}
+      {React.cloneElement(icon, { className: "h-10 w-10" })}
     </div>
     <p className={`text-4xl font-bold mb-2 text-[${deepBlue}]`}>{number}</p>
     <p className="text-gray-600 text-sm flex-grow">{label}</p>
   </div>
 );
 
-// --- Main Page Component (Now a Server Component) ---
-
-// Data definitions remain the same as they are static
+// Data definitions
 const applications = [
   {
     icon: (
@@ -168,6 +304,7 @@ const applications = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -190,6 +327,7 @@ const applications = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -212,6 +350,7 @@ const applications = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -234,6 +373,7 @@ const applications = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -259,6 +399,7 @@ const techComponents = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -281,6 +422,7 @@ const techComponents = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -303,6 +445,7 @@ const techComponents = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -325,6 +468,7 @@ const techComponents = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -352,6 +496,7 @@ const statsData = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -372,6 +517,7 @@ const statsData = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -392,6 +538,7 @@ const statsData = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -412,6 +559,7 @@ const statsData = [
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -445,162 +593,126 @@ const testimonials = [
   },
 ];
 
-// Optional: Define navItems if you want to build a static navbar
-const navItems = [
-  { id: "intro", label: "Introduction" },
-  { id: "what-is-vs", label: "What is VS?" },
-  { id: "why-vs", label: "Why It Matters" },
-  { id: "applications", label: "Applications" },
-  { id: "tech", label: "Technology" },
-  { id: "stats", label: "Impact" },
-  { id: "testimonials", label: "Voices" },
-  { id: "future", label: "Future" },
-  { id: "resources", label: "Resources" },
-];
-
-// --- Server Component Function ---
-// Note: For SSG with dynamic routes, you might need generateStaticParams.
-// For a single static page like this, it's often not strictly necessary in the App Router,
-// but it doesn't hurt to be explicit if needed.
 // This tells Next.js to generate this page at build time
 export const generateStaticParams = async () => {
   return [];
 };
 
 export default function VirtualSurgeryEducationPage() {
-  // No state or effects here anymore
-
   return (
-    <div className={`bg-gray-50 font-sans text-gray-700`}>
-      {/* Optional: Static Navigation Bar */}
-      {/* <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm shadow-md z-50">
-          <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
-              <div className="text-lg font-bold text-gray-800">VS Education</div>
-              <div className="hidden md:flex space-x-6">
-                  {navItems.map(item => (
-                      <a key={item.id} href={`#${item.id}`} className="text-gray-600 hover:text-[#FE6B8B] transition-colors text-sm font-medium">
-                          {item.label}
-                      </a>
-                  ))}
-              </div>
-              {/* Basic Mobile Menu Placeholder - requires client-side JS for toggle */}
-      {/* <div className="md:hidden">
-                  <button className="text-gray-600 focus:outline-none">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-                  </button>
-              </div> * /}
-          </div>
-      </nav> */}
-
-      {/* --- Hero Section --- */}
-      <section
-        id="intro"
-        className="relative min-h-screen flex items-center justify-center text-center overflow-hidden pt-24 pb-12 px-4" // Adjusted padding
-        style={{
-          // Use the imported image object's src property
-          backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(254, 107, 139, 0.05)), url('${HeroBackgroundImage.src}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-          backgroundAttachment: "fixed",
+    <>
+      {/* Structured Data Script */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
         }}
-      >
-        {/* Static Decorative elements - animations removed */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute w-48 h-48 rounded-full bg-pink-200/20 -top-16 -left-16 opacity-50" />
-          <div className="absolute w-32 h-32 rounded-full bg-rose-200/20 bottom-16 -right-16 opacity-50" />
-          <div className="absolute w-40 h-40 rounded-full bg-orange-200/15 top-1/4 right-1/4 opacity-40" />
-        </div>
+      />
+      
+      <div className="bg-gray-50 font-sans text-gray-700">
+        {/* Hero Section */}
+        <section
+          id="intro"
+          className="relative min-h-screen flex items-center justify-center text-center overflow-hidden pt-24 pb-12 px-4"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(254, 107, 139, 0.05)), url('${HeroBackgroundImage.src}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+            backgroundAttachment: "fixed",
+          }}
+        >
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div className="absolute w-48 h-48 rounded-full bg-pink-200/20 -top-16 -left-16 opacity-50" />
+            <div className="absolute w-32 h-32 rounded-full bg-rose-200/20 bottom-16 -right-16 opacity-50" />
+            <div className="absolute w-40 h-40 rounded-full bg-orange-200/15 top-1/4 right-1/4 opacity-40" />
+          </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto">
-          {/* Icon container - Static */}
-          <div className="inline-block p-3 rounded-full bg-gradient-to-tr from-pink-100 to-orange-100 shadow-lg mb-6">
-            <div
-              className={`bg-gradient-to-tr from-[${pinkColor}] to-[${orangeColor}] p-4 rounded-full shadow-inner`}
-            >
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <div className="inline-block p-3 rounded-full bg-gradient-to-tr from-pink-100 to-orange-100 shadow-lg mb-6">
+              <div
+                className={`bg-gradient-to-tr from-[${pinkColor}] to-[${orangeColor}] p-4 rounded-full shadow-inner`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-10 w-10 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-white">
+              We Are Bringing{" "}
+              <GradientText>Virtual Surgery</GradientText>
+              {" "}For You
+            </h1>
+            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto">
+              Discover how Virtual Reality is transforming healthcare education,
+              offering unprecedented opportunities for skill development and
+              anatomical understanding.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#what-is-vs"
+                className={StaticButtonClasses(true)}
+                aria-label="Learn more about Virtual Surgery Education"
+              >
+                <span className="flex items-center justify-center">
+                  <span>Discover More</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 ml-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* What is Virtual Surgery Section */}
+        <Section id="what-is-vs" className="bg-white">
+          <FeatureWithImage
+            title="What is Virtual Surgery?"
+            description="Virtual Surgery uses immersive technologies like Virtual Reality (VR) and Augmented Reality (AR) to create simulated medical environments. It allows users to interact with virtual anatomical models, instruments, and patient scenarios in a highly realistic, yet completely safe, digital space. Think of it as a sophisticated, interactive flight simulator for healthcare professionals."
+            image={VirtualSurgeryImage}
+            reversed={false}
+            icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-white"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-            </div>
-          </div>
-
-          {/* Heading - Static */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-800">
-            Step into the Future of Medical Learning with{" "}
-            <GradientText>Virtual Surgery</GradientText>
-          </h1>
-          {/* Paragraph - Static */}
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Discover how Virtual Reality is transforming healthcare education,
-            offering unprecedented opportunities for skill development and
-            anatomical understanding.
-          </p>
-          {/* Call to Action - Static Anchor Link */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a // Changed Button component to an anchor tag
-              href="#what-is-vs" // Link to the section ID
-              className={StaticButtonClasses(true)} // Apply button styles
-            >
-              <span className="flex items-center justify-center">
-                <span>Discover More</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 ml-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-            </a>
-            {/* Optional Secondary Button as link */}
-            {/* <a href="#resources" className={StaticButtonClasses(false)}>
-                  View Resources
-              </a> */}
-          </div>
-        </div>
-      </section>
-
-      {/* --- What is Virtual Surgery? --- */}
-      <Section id="what-is-vs" className="bg-white">
-        <FeatureWithImage
-          title="What is Virtual Surgery?"
-          description="Virtual Surgery uses immersive technologies like Virtual Reality (VR) and Augmented Reality (AR) to create simulated medical environments. It allows users to interact with virtual anatomical models, instruments, and patient scenarios in a highly realistic, yet completely safe, digital space. Think of it as a sophisticated, interactive flight simulator for healthcare professionals."
-          image={VirtualSurgeryImage}
-          reversed={false}
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {" "}
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />{" "}
-            </svg>
-          }
-        />
-      </Section>
+            }
+          />
+        </Section>
 
       {/* --- Why It Matters for Students --- */}
       <Section id="why-vs" className={`bg-[${lightOrangeBg}]`}>
@@ -864,6 +976,7 @@ export default function VirtualSurgeryEducationPage() {
           </div>
         </div>
       </Section>
-    </div> // End main container
-  );
+    </div> 
+  </>
+);
 }

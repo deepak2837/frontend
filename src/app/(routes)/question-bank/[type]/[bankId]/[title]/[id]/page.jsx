@@ -1,28 +1,32 @@
 // app/question-bank/[id]/page.js
 import { Suspense } from "react";
-import { cookies } from "next/headers";
+
 import { redirect } from "next/navigation";
 import LineLoader from "@/components/common/Loader";
 import QuestionBankClientPage from "./client-page";
 import { requireAuth } from "@/utils/auth";
-
+const REQUIRE_QUESTION_BANK_AUTH = process.env.NEXT_PUBLIC_QUESTION_BANK_AUTHENTICATION === "true";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Server component that fetches data
 async function fetchInitialData(id) {
-  const token = requireAuth();
-
-  if (!token) {
-    redirect("/login");
+  let token = null;
+  if (REQUIRE_QUESTION_BANK_AUTH) {
+    token = requireAuth();
+    if (!token) {
+      redirect("/login");
+    }
   }
+
+  const headers = REQUIRE_QUESTION_BANK_AUTH && token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
 
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/question-bank/questions-full/${id}?page=1&limit=5`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
         next: { revalidate: 60 }, // Cache for 60 seconds
       }
     );

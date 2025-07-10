@@ -32,19 +32,19 @@ async function getQuestions(token) {
 
 export default async function QuestionBanksPage({ params }) {
   // Get authentication token from cookies
-  const token = requireAuth();
+  // const token = requireAuth();
 
-  // Check authentication
-  if (!token) {
-    redirect("/login");
-  }
+  // // Check authentication
+  // if (!token) {
+  //   redirect("/login");
+  // }
 
   // Decode params safely
   const bankIdParam = params.bankId ? decodeURIComponent(params.bankId) : "";
   const typeParam = params.type ? decodeURIComponent(params.type) : "";
 
   // Fetch data server-side
-  const response = await getQuestions(token);
+  const response = await getQuestions();
 
   // Filter banks based on bankIdParam
   const filteredBanks =

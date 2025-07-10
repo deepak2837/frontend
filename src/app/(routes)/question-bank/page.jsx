@@ -51,16 +51,8 @@ async function getQuestions(token) {
 }
 
 export default async function Page() {
-  // Get authentication token from cookies
-  const token = requireAuth();
-
-  // Check if user is authenticated
-  if (!token) {
-    redirect("/login");
-  }
-
   // Fetch data server-side
-  const response = await getQuestions(token);
+  const response = await getQuestions(null); // No authentication check here
   const isError = response.error;
   const data = response.data;
 

@@ -99,10 +99,10 @@ export default function BankCard({ bank, typeParam }) {
         .replace(/\s+/g, "-")}/${bank._id}`}
       className="group block h-full"
     >
-      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 h-full flex flex-col transform transition-transform hover:translate-y-[-2px]">
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 h-full flex flex-col transform transition-transform hover:translate-y-[-2px] max-w-xs sm:max-w-sm md:max-w-md mx-auto min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
         {/* Image Area */}
         <div className="relative">
-          <div className="h-28 sm:h-36 md:h-44 lg:h-52 xl:h-64 w-full overflow-hidden">
+          <div className="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-full overflow-hidden">
             {renderBankImage(bank.image)}
           </div>
 
@@ -161,13 +161,13 @@ export default function BankCard({ bank, typeParam }) {
         </div>
 
         {/* Content Area */}
-        <div className="p-2 sm:p-3 md:p-4 lg:p-5 flex-grow flex flex-col">
+        <div className="p-1 sm:p-2 md:p-2.5 lg:p-3 flex-grow flex flex-col">
           {/* Title and Subject */}
-          <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-800 mb-0.5 sm:mb-1 lg:mb-2 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-gray-800 mb-0.5 sm:mb-1 lg:mb-2 group-hover:text-primary transition-colors line-clamp-2">
             {bank.title}
           </h3>
           {/* Topic Badge and Emoji */}
-          <div className="mb-1 sm:mb-2 flex items-center gap-1 lg:gap-2">
+          <div className="mb-0.5 sm:mb-1 flex items-center gap-0.5 lg:gap-1">
             <span className="inline-block bg-primary/10 text-primary text-xs font-medium rounded-full px-1.5 py-0.5 sm:px-2 lg:px-3 lg:py-1">
               {bank.topic || bank.category || "General"}
             </span>
@@ -184,9 +184,9 @@ export default function BankCard({ bank, typeParam }) {
           </div>
 
           {/* Footer / Actions */}
-          <div className="mt-auto pt-1 sm:pt-2 lg:pt-3 border-t border-gray-100 flex justify-end items-center">
+          <div className="mt-auto pt-0.5 sm:pt-1 lg:pt-1.5 border-t border-gray-100 flex justify-end items-center">
             {/* View Bank Button */}
-            <button className="px-2 sm:px-3 lg:px-4 py-0.5 sm:py-1 lg:py-1.5 bg-primary text-white rounded text-xs sm:text-sm hover:bg-primary/90 transition-all">
+            <button className="px-1.5 sm:px-2 lg:px-2.5 py-0.5 sm:py-0.5 lg:py-1 bg-primary text-white rounded text-xs sm:text-xs hover:bg-primary/90 transition-all">
               View Bank
             </button>
           </div>
