@@ -33,15 +33,15 @@ async function getQuestions(token) {
 export default async function QuestionBanksPage({ params }) {
   // Get authentication token from cookies
   // const token = requireAuth();
-
+  const { type, bankId } = await params;
   // // Check authentication
   // if (!token) {
   //   redirect("/login");
   // }
 
   // Decode params safely
-  const bankIdParam = params.bankId ? decodeURIComponent(params.bankId) : "";
-  const typeParam = params.type ? decodeURIComponent(params.type) : "";
+  const bankIdParam = bankId ? decodeURIComponent(bankId) : "";
+  const typeParam = type ? decodeURIComponent(type) : "";
 
   // Fetch data server-side
   const response = await getQuestions();

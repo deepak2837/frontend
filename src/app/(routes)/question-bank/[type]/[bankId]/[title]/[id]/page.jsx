@@ -1,6 +1,6 @@
 // app/question-bank/[id]/page.js
 import { Suspense } from "react";
-
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import LineLoader from "@/components/common/Loader";
 import QuestionBankClientPage from "./client-page";
@@ -10,18 +10,24 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Server component that fetches data
 async function fetchInitialData(id) {
+ async function getAuthToken() {
+    const cookieStore =  await cookies();
+    return cookieStore.get("auth_token")?.value;
+  }
+  
   let token = null;
-  token = requireAuth?.() ?? null;
+ 
   if (REQUIRE_QUESTION_BANK_AUTH) {
+    token = await requireAuth();
     if (!token) {
       redirect("/login");
     }
   }
-
-  const headers = token
-    ? { Authorization: `Bearer ${token}` }
+console.log(token)
+  const headers = REQUIRE_QUESTION_BANK_AUTH || await getAuthToken?.()
+    ? { Authorization: `Bearer ${await getAuthToken?.()}` }
     : {};
-  
+  console.log("yes",headers)
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/question-bank/questions-full/${id}?page=1&limit=5`,
@@ -47,7 +53,8 @@ async function fetchInitialData(id) {
 }
 
 export default async function QuestionBankPage({ params }) {
-  const initialData = await fetchInitialData(params.id);
+  const { id } = await params; 
+  const initialData = await fetchInitialData(id);
 
   return (
     <Suspense
@@ -58,7 +65,7 @@ export default async function QuestionBankPage({ params }) {
       }
     >
       <QuestionBankClientPage
-        id={params.id}
+        id={id}
         initialQuestions={initialData.questions || []}
         initialTotalPages={initialData.pagination?.totalPages || 0}
       />
