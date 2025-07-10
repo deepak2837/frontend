@@ -11,17 +11,17 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // Server component that fetches data
 async function fetchInitialData(id) {
   let token = null;
+  token = requireAuth?.() ?? null;
   if (REQUIRE_QUESTION_BANK_AUTH) {
-    token = requireAuth();
     if (!token) {
       redirect("/login");
     }
   }
 
-  const headers = REQUIRE_QUESTION_BANK_AUTH && token
+  const headers = token
     ? { Authorization: `Bearer ${token}` }
     : {};
-
+  
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/question-bank/questions-full/${id}?page=1&limit=5`,
