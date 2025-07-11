@@ -1,57 +1,24 @@
-// app/question-bank/[type]/[bankId]/page.jsx
+// app/question-bank/[type]/page.jsx
 
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import BankCard from "./BankCard";
 import EmptyState from "@/components/EmptyState";
 import { requireAuth } from "@/utils/auth";
 import { API_URL } from "@/config/config";
 
-// Subject names for SEO keywords (from main page)
-const subjectNames = [
-  "MEDICINE",
-  "Surgery",
-  "Pharmacology",
-  "Microbiology",
-  "Pathology",
-  "Anatomy",
-  "Biochemistry",
-  "Physiology",
-  "Forensic medicine and toxicology",
-  "community medicine",
-  "Obstetrics and Gynaecology",
-  "Pediatrics",
-  "Psychiatry",
-  "Anaesthesiology",
-  "Ophthalmology",
-  "ENT (Otolaryngology)",
-  "Dermatology and Venereology",
-  "Orthopedics",
-  "ENT (Otorhinolaryngology)",
-  "Dermatology",
-  "Radiology",
-  "PSM"
-];
-
 // SEO Metadata - Dynamic based on params
 export async function generateMetadata({ params }) {
-  const { type, bankId } = await params;
+  const { type } = await params;
   const decodedType = type ? decodeURIComponent(type) : "";
-  const decodedBankId = bankId ? decodeURIComponent(bankId) : "";
   
-  const title = `${decodedBankId} Question Banks - ${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Medical Exam Preparation | MedGloss`;
-  const description = `Explore comprehensive ${decodedBankId} question banks for ${decodedType} medical exams. Practice with MCQs, track progress, and improve your medical knowledge with our specialized question collections.`;
+  const title = `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Question Banks - Medical Exam Preparation | MedGloss`;
+  const description = `Explore comprehensive ${decodedType} question banks for medical exams. Practice with MCQs, track progress, and improve your ${decodedType} medical knowledge with our specialized question collections.`;
   
   return {
     title,
     description,
-    keywords: [
-      decodedBankId,
-      decodedType,
-      "question banks", "medical exam preparation", "MCQs", "medical questions", "exam practice", "medical education", "question bank library", "medical students", "healthcare education",
-      ...subjectNames
-    ].join(", "),
+    keywords: `${decodedType}, question banks, medical exam preparation, MCQs, medical questions, exam practice, medical education, question bank library, medical students, healthcare education, ${decodedType} practice questions`,
     authors: [{ name: "Medical Education Team" }],
     creator: "Medical Education Platform",
     publisher: "MedGloss",
@@ -62,19 +29,19 @@ export async function generateMetadata({ params }) {
     },
     metadataBase: new URL("https://medgloss.com"),
     alternates: {
-      canonical: `/question-bank/${type}/${bankId}`,
+      canonical: `/question-bank/${type}`,
     },
     openGraph: {
-      title: `${decodedBankId} Question Banks - ${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Medical Preparation`,
-      description: `Comprehensive ${decodedBankId} question banks for ${decodedType} medical exams. Practice with MCQs and improve your medical knowledge.`,
-      url: `https://medgloss.com/question-bank/${type}/${bankId}`,
+      title: `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Question Banks - Medical Exam Preparation`,
+      description: `Comprehensive ${decodedType} question banks for medical exams. Practice with MCQs and improve your medical knowledge.`,
+      url: `https://medgloss.com/question-bank/${type}`,
       siteName: "MedGloss",
       images: [
         {
           url: "https://medgloss.com/_next/image?url=%2F3.png&w=1080&q=75",
           width: 1080,
           height: 630,
-          alt: `${decodedBankId} Question Banks - Medical Exam Preparation`,
+          alt: `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Question Banks - Medical Exam Preparation`,
         },
       ],
       locale: "en_US",
@@ -82,8 +49,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${decodedBankId} Question Banks - ${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Medical Preparation`,
-      description: `Comprehensive ${decodedBankId} question banks for ${decodedType} medical exams. Practice with MCQs.`,
+      title: `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Question Banks - Medical Exam Preparation`,
+      description: `Comprehensive ${decodedType} question banks for medical exams. Practice with MCQs.`,
       images: ["https://medgloss.com/_next/image?url=%2F3.png&w=1080&q=75"],
       creator: "@medgloss",
     },
@@ -132,7 +99,7 @@ async function getQuestions(token) {
 
 // Generate static params for better SEO
 export async function generateStaticParams() {
-  // This would ideally fetch all possible type/bankId combinations
+  // This would ideally fetch all possible type combinations
   // For now, return empty array to allow dynamic generation
   return [];
 }
@@ -140,66 +107,53 @@ export async function generateStaticParams() {
 // This tells Next.js to generate this page at build time
 export const dynamic = 'force-static';
 
-// Helper to generate ItemList schema for sub-banks
-function getItemListSchema(filteredBanks, typeParam, bankIdParam) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": `${bankIdParam} Question Banks`,
-    "itemListElement": filteredBanks.map((bank, idx) => ({
-      "@type": "ListItem",
-      "position": idx + 1,
-      "name": bank.title || bank.name,
-      "url": `https://medgloss.com/question-bank/${encodeURIComponent(typeParam)}/${encodeURIComponent(bankIdParam)}/${encodeURIComponent(bank.title || bank.name).toLowerCase().replace(/\s+/g, "-")}/${bank._id}`
-    }))
-  };
-}
-
-export default async function QuestionBanksPage({ params }) {
-  // Get authentication token from cookies
-  // const token = requireAuth();
-  const { type, bankId } = await params;
-  // // Check authentication
-  // if (!token) {
-  //   redirect("/login");
-  // }
+export default async function QuestionBankTypePage({ params }) {
+  const { type } = await params;
 
   // Decode params safely
-  const bankIdParam = bankId ? decodeURIComponent(bankId) : "";
   const typeParam = type ? decodeURIComponent(type) : "";
 
   // Fetch data server-side
   const response = await getQuestions();
 
-  // Filter banks based on bankIdParam
+  // Filter banks based on typeParam
   const filteredBanks =
     response?.data?.filter(
       (bank) =>
-        bank.name &&
-        bankIdParam &&
-        bank.name.toLowerCase() === bankIdParam.toLowerCase()
+        bank.type &&
+        typeParam &&
+        bank.type.toLowerCase() === typeParam.toLowerCase()
     ) || [];
+
+  // Group banks by name for better organization
+  const groupedBanks = filteredBanks.reduce((acc, bank) => {
+    if (!acc[bank.name]) {
+      acc[bank.name] = [];
+    }
+    acc[bank.name].push(bank);
+    return acc;
+  }, {});
 
   // Structured Data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": `${bankIdParam} Question Banks`,
-    "description": `Comprehensive question banks for ${bankIdParam} in ${typeParam} category`,
-    "url": `https://medgloss.com/question-bank/${type}/${bankId}`,
-    "numberOfItems": filteredBanks.length,
-    "itemListElement": filteredBanks.map((bank, index) => ({
+    "name": `${typeParam.charAt(0).toUpperCase() + typeParam.slice(1)} Question Banks`,
+    "description": `Comprehensive question banks for ${typeParam} category`,
+    "url": `https://medgloss.com/question-bank/${type}`,
+    "numberOfItems": Object.keys(groupedBanks).length,
+    "itemListElement": Object.keys(groupedBanks).map((bankName, index) => ({
       "@type": "Course",
       "position": index + 1,
-      "name": bank.title || bank.name,
-      "description": bank.description || `Question bank for ${bankIdParam}`,
+      "name": bankName,
+      "description": `Question banks for ${bankName} in ${typeParam} category`,
       "provider": {
         "@type": "Organization",
         "name": "MedGloss"
       },
-      "url": `https://medgloss.com/question-bank/${type}/${bankId}/${encodeURIComponent(bank.title || bank.name)}/${bank._id}`,
+      "url": `https://medgloss.com/question-bank/${type}/${encodeURIComponent(bankName)}`,
       "educationalLevel": "Medical Education",
-      "teaches": bankIdParam,
+      "teaches": bankName,
       "category": typeParam
     })),
     "breadcrumb": {
@@ -222,12 +176,6 @@ export default async function QuestionBanksPage({ params }) {
           "position": 3,
           "name": typeParam.charAt(0).toUpperCase() + typeParam.slice(1),
           "item": `https://medgloss.com/question-bank/${type}`
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": bankIdParam,
-          "item": `https://medgloss.com/question-bank/${type}/${bankId}`
         }
       ]
     }
@@ -242,24 +190,16 @@ export default async function QuestionBanksPage({ params }) {
           __html: JSON.stringify(structuredData),
         }}
       />
-      {/* ItemList schema for sub-banks */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getItemListSchema(filteredBanks, typeParam, bankIdParam)),
-        }}
-      />
       
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-5 lg:py-8">
         {/* Header - Bigger on desktop */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 sm:mb-6 lg:mb-10 gap-2 sm:gap-3">
           <div>
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">
-              {typeParam.charAt(0).toUpperCase() + typeParam.slice(1)} Question
-              Banks
+              {typeParam.charAt(0).toUpperCase() + typeParam.slice(1)} Question Banks
             </h1>
             <p className="text-xs sm:text-sm lg:text-base text-gray-500 mt-1 lg:mt-2">
-              Browse and explore question banks for {bankIdParam}
+              Browse and explore question banks for {typeParam} category
             </p>
           </div>
           <Link href="/question-bank">
@@ -284,20 +224,71 @@ export default async function QuestionBanksPage({ params }) {
         </div>
 
         {/* Content Area: Responsive Grid or Empty State */}
-        {filteredBanks.length === 0 ? (
+        {Object.keys(groupedBanks).length === 0 ? (
           <EmptyState
             icon="question"
             title="No question banks found"
-            message="There are no question banks available for this category."
+            message={`There are no question banks available for ${typeParam} category.`}
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {filteredBanks.map((bank) => (
-              <BankCard key={bank._id} bank={bank} typeParam={typeParam} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {Object.keys(groupedBanks).map((bankName) => (
+              <Link
+                key={bankName}
+                href={`/question-bank/${type}/${encodeURIComponent(bankName)}`}
+                className="group"
+              >
+                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary/20 h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
+                      {groupedBanks[bankName].length} banks
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-primary transition-colors">
+                    {bankName}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    Explore question banks for {bankName} in {typeParam} category
+                  </p>
+                  <div className="flex items-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform">
+                    View Banks
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 ml-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         )}
       </div>
     </>
   );
-}
+} 

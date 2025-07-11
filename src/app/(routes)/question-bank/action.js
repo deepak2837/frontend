@@ -6,12 +6,23 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const REQUIRE_QUESTION_BANK_AUTH = process.env.NEXT_PUBLIC_QUESTION_BANK_AUTHENTICATION === "true";
 
 export async function fetchQuestionBankData(id, page = 1, filters = {}) {
-  const token = requireAuth();
+  // Token logic: SSR-style
+  async function getAuthToken() {
+    const cookieStore = await cookies();
+    return cookieStore.get("auth_token")?.value;
+  }
 
-  if (!token) {
-    redirect("/login");
+  let token = null;
+  if (REQUIRE_QUESTION_BANK_AUTH) {
+    token = await requireAuth();
+    if (!token) {
+      redirect("/login");
+    }
+  } else {
+    token = await getAuthToken();
   }
 
   try {
@@ -21,12 +32,14 @@ export async function fetchQuestionBankData(id, page = 1, filters = {}) {
       ...filters,
     }).toString();
 
+    const headers = token
+      ? { Authorization: `Bearer ${token}` }
+      : {};
+
     const response = await fetch(
       `${BASE_URL}/api/v1/question-bank/questions-full/${id}?${queryParams}`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
         cache: "no-store", // Don't cache this data
       }
     );
@@ -51,15 +64,12 @@ export async function fetchQuestionBankData(id, page = 1, filters = {}) {
 }
 
 export async function recordAttempt(formData) {
-  
-
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/user-activities/record-attempt`,
       {
         method: "POST",
         headers: {
-   
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

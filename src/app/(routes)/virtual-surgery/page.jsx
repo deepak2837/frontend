@@ -40,7 +40,7 @@ export const metadata = {
     images: [
       {
         url: "https://medgloss.com/_next/static/media/img2.5c41c1be.jpg",
-        width: 1200,
+        width: 1080,
         height: 630,
         alt: "Virtual Surgery Education - Medical VR Training",
       },
