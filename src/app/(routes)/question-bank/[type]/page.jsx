@@ -97,11 +97,39 @@ async function getQuestions(token) {
   }
 }
 
-// Generate static params for better SEO
+// Generate static params for better SEO - Fetch all unique types
 export async function generateStaticParams() {
-  // This would ideally fetch all possible type combinations
-  // For now, return empty array to allow dynamic generation
-  return [];
+  try {
+    // Fetch all question banks from the API
+    const response = await fetch(`${API_URL}/api/v1/question-bank/list/live`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch question banks for static generation");
+      return [];
+    }
+
+    const data = await response.json();
+    const questionBanks = data.data || [];
+
+    // Get unique types
+    const uniqueTypes = [...new Set(questionBanks.map((bank) => bank.type).filter(Boolean))];
+
+    // Generate params for each unique type
+    const params = uniqueTypes.map((type) => ({
+      type: encodeURIComponent(type),
+    }));
+
+    console.log(`Generated ${params.length} static params for types:`, uniqueTypes);
+    return params;
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
 // This tells Next.js to generate this page at build time

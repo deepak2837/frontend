@@ -1,7 +1,7 @@
 "use client";
 
-import Aside from "@/components/AdSection/Aside";
-import TopAdSection from "@/components/AdSection/TopAdSection";
+// import Aside from "@/components/AdSection/Aside";
+// import TopAdSection from "@/components/AdSection/TopAdSection";
 import React, { useState } from "react";
 import Videos from "@/lib/videosDummyData";
 import VideoCard from "@/components/videos/VideoCard";
@@ -25,8 +25,8 @@ function Page() {
 
   return (
     <>
-      <Aside />
-      <TopAdSection />
+      {/* <Aside /> */}
+      {/* <TopAdSection /> */}
       <div className="flex flex-col items-center">
         {/* Filter Dropdown */}
         <div className="flex flex-col md:flex-row gap-4 px-10 py-4  w-full md:w-[70%] justify-start">

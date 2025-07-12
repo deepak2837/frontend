@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react";
 import { useRouter } from "next/navigation"
-import Aside from "@/components/AdSection/Aside";
-import BottomAdSection from "@/components/AdSection/BottomAdSection";
-import TopAdSection from "@/components/AdSection/TopAdSection";
+// import Aside from "@/components/AdSection/Aside";
+// import BottomAdSection from "@/components/AdSection/BottomAdSection";
+// import TopAdSection from "@/components/AdSection/TopAdSection";
 import CaseStudyCard from "@/components/CaseStudy/CaseStudyCard";
 import LineLoader from "@/components/common/Loader";
 import caseStudyDumyData from "@/lib/caseStudyDumyData.js"
@@ -47,8 +47,8 @@ export default function Page() {
   
   return (
     <>
-      <Aside />
-      <TopAdSection />
+      {/* <Aside /> */}
+      {/* <TopAdSection /> */}
       <div className="main">
         <div className="md:mt-10">
           {/* Filter section */}
@@ -121,7 +121,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <BottomAdSection />
+      {/* <BottomAdSection /> */}
     </>
   );
 }

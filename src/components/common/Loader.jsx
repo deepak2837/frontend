@@ -2,7 +2,7 @@
 
 const LineLoader = () => {
   return (
-    <div className="flex items-center justify-center w-screen h-screen overflow-hidden bg-gradient-radial">
+    <div className="flex items-center justify-center w-full h-full min-h-[200px] -mt-40">
       <style jsx>{`
         @keyframes pill-open {
           0%, 20%, 80%, 100% { margin-top: 0; }

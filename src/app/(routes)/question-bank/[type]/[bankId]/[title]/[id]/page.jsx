@@ -155,11 +155,39 @@ async function fetchInitialData(id) {
   }
 }
 
-// Generate static params for better SEO
+// Generate static params for better SEO - Fetch all question bank IDs
 export async function generateStaticParams() {
-  // This would ideally fetch all possible question bank IDs
-  // For now, return empty array to allow dynamic generation
-  return [];
+  try {
+    // Fetch all question banks from the API
+    const response = await fetch(`${BASE_URL}/api/v1/question-bank/list/live`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch question banks for static generation");
+      return [];
+    }
+
+    const data = await response.json();
+    const questionBanks = data.data || [];
+
+    // Generate params for each question bank
+    const params = questionBanks.map((bank) => ({
+      type: encodeURIComponent(bank.type || "subject"),
+      bankId: encodeURIComponent(bank.name || "general"),
+      title: encodeURIComponent((bank.title || bank.name || "questions").toLowerCase().replace(/\s+/g, "-")),
+      id: bank._id,
+    }));
+
+    console.log(`Generated ${params.length} static params for question banks`);
+    return params;
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
 // This tells Next.js to generate this page at build time
