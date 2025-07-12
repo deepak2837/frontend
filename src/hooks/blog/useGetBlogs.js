@@ -11,8 +11,11 @@ const useGetBlogs = ({ page = 1, limit = 10, search = "", subject = "", difficul
   if (difficulty) queryParams.append('difficulty', difficulty);
   if (sortBy) queryParams.append('sortBy', sortBy);
 
+  const url = `/api/v1/blog?${queryParams.toString()}`;
+  console.log('Blog API URL:', url);
+
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/v1/blog?${queryParams.toString()}`,
+    url,
     fetcher
   );
   return {

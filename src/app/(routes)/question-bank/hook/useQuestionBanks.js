@@ -4,13 +4,15 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { fetchQuestionBankData, recordAttempt } from "../action";
+import useAuthStore from "@/store/authStore";
 
 export function useQuestionBank(
   id,
   initialQuestions = [],
   initialTotalPages = 0
 ) {
-  const router = useRouter();
+ 
+
   const [questions, setQuestions] = useState(initialQuestions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -74,8 +76,20 @@ export function useQuestionBank(
         ? Math.floor((Date.now() - attemptStartTime) / 1000)
         : 0;
 
+      // Get userId from Zustand auth store (decrypted)
+      const { getUser } = useAuthStore.getState();
+      const user = getUser();
+      console.log(user)
+      const userId = user?._id;
+
+      if (!userId) {
+        // Optionally show a message or skip recording
+        console.warn("No userId found, skipping attempt record.");
+        return;
+      }
+
       const formData = new FormData();
-      formData.append("userId", localStorage.getItem("userId"));
+      formData.append("userId", userId);
       formData.append("questionBankId", id);
       formData.append("questionId", questionId);
       formData.append("isCorrect", isCorrect.toString());
@@ -83,7 +97,6 @@ export function useQuestionBank(
       formData.append("hintsUsed", hintsUsed.toString());
 
       const result = await recordAttempt(formData);
-
       if (!result.success) {
         console.error("Error recording attempt:", result.error);
       }

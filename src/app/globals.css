@@ -44,12 +44,38 @@ body::-webkit-scrollbar {
   }
 }
 
+/* Line clamp utilities for text truncation */
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
 /* Quill Editor Content Styles */
 .quill-content {
   /* Basic text styling */
   font-size: 1.125rem;
   line-height: 1.75;
   color: #060607;
+  /* Prevent layout shifts */
+  min-height: 200px;
 }
 
 .quill-content h1 {
@@ -100,6 +126,11 @@ body::-webkit-scrollbar {
   max-width: 100%;
   height: auto;
   margin: 1rem 0;
+  /* Prevent layout shifts */
+  aspect-ratio: attr(width) / attr(height);
+  object-fit: cover;
+  /* Fallback for browsers that don't support aspect-ratio */
+  min-height: 200px;
 }
 
 .quill-content a {

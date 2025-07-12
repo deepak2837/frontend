@@ -7,19 +7,23 @@ import useAuthStore from "@/store/authStore";
 // Initialize context with default values
 const AuthContext = createContext({
   isLoggedIn: false,
+  user: null,
   login: () => {},
   logout: () => {},
 });
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const router = useRouter(); // Add router here
-  const {} = useAuthStore();
+  const { getUser, getToken, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+    const token = getToken();
+    const userData = getUser();
+    setIsLoggedIn(!!token && isAuthenticated);
+    setUser(userData);
+  }, [getToken, getUser, isAuthenticated]);
 
   const login = (token) => {
     localStorage.setItem("token", token, { expires: 7, secure: true });
@@ -34,7 +38,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

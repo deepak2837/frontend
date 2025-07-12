@@ -1,22 +1,44 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
+import hljs from "highlight.js/lib/common"; // smaller bundle, common languages
 import dynamic from "next/dynamic";
 import { toast, Toaster } from "react-hot-toast";
 import useAuthStore from "@/store/authStore";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import { Box, Button, CircularProgress, LinearProgress } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import Head from "next/head";
-import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
-// Register custom fonts with Quill
-import Quill from "quill";
-const FontAttributor = Quill.import("attributors/class/font");
-FontAttributor.whitelist = ["serif", "sans-serif", "monospace"];
-Quill.register(FontAttributor, true);
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "highlight.js/styles/github.css";
+import { useParams } from "next/navigation";
+// Register custom fonts with Quill
+
+
+const MyReactQuill = dynamic(
+  async () => {
+    if (typeof window !== "undefined") {
+      window.hljs = hljs;
+      const Quill = (await import("quill")).default;
+      const FontAttributor = Quill.import("attributors/class/font");
+      FontAttributor.whitelist = ["serif", "sans-serif", "monospace"];
+      Quill.register(FontAttributor, true);
+    }
+    const { default: RQ } = await import("react-quill-new");
+    return function ReactQuillHoc(props) {
+      return <RQ {...props} />;
+    };
+  },
+  {
+    ssr: false,
+    loading: () => <p>Loading editor...</p>,
+  }
+);
+
+// Make highlight.js available globally for Quill
+if (typeof window !== "undefined") {
+  window.hljs = hljs;
+}
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -97,29 +119,13 @@ const modules = {
 };
 
 const formats = [
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "bullet",
-  "indent",
-  "color",
-  "background",
-  "align",
-  "link",
-  "image",
-  "video",
-  "blockquote",
-  "code-block",
-  "script",
-  "hr",
+  "header", "font", "size", "bold", "italic", "underline", "strike",
+  "list", "bullet", "indent", "color", "background", "align", "link",
+  "image", "video", "blockquote", "code-block", "script"
 ];
 
 export default function EditBlogContent({ params }) {
+  const { id } = use(params);
   const router = useRouter();
   const { getToken } = useAuthStore();
   const [content, setContent] = useState("");
@@ -129,11 +135,11 @@ export default function EditBlogContent({ params }) {
 
   useEffect(() => {
     fetchBlogContent();
-  }, [params.id]);
+  }, [id]);
 
   const fetchBlogContent = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/v1/blog/${params.id}`, {
+      const response = await fetch(`${BASE_URL}/api/v1/blog/${id}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -171,7 +177,7 @@ export default function EditBlogContent({ params }) {
         throw new Error('Content size too large. Please reduce the number or size of images.');
       }
 
-      const response = await fetch(`${BASE_URL}/api/v1/blog/${params.id}/content`, {
+      const response = await fetch(`${BASE_URL}/api/v1/blog/${id}/content`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -222,11 +228,10 @@ export default function EditBlogContent({ params }) {
         <div className="mb-4">
           <h1 className="text-2xl font-bold mb-4">Edit Blog Content</h1>
           <div className="h-[600px] mb-4">
-            <ReactQuill
+            <MyReactQuill
               value={content}
               onChange={setContent}
               modules={modules}
-              formats={formats}
               theme="snow"
               className="h-[500px] editor-content"
               preserveWhitespace={true}

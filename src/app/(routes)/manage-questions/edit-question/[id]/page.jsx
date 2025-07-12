@@ -23,6 +23,8 @@ import {
   ContentPaste as ContentPasteIcon,
 } from "@mui/icons-material";
 import useAuthStore from "@/store/authStore";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 

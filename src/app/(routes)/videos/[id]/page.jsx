@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Aside from "@/components/AdSection/Aside";
-import BottomAdSection from "@/components/AdSection/BottomAdSection";
-import TopAdSection from "@/components/AdSection/TopAdSection";
+// import Aside from "@/components/AdSection/Aside";
+// import BottomAdSection from "@/components/AdSection/BottomAdSection";
+// import TopAdSection from "@/components/AdSection/TopAdSection";
 import LineLoader from "@/components/common/Loader";
 import Videos from "@/lib/videosDummyData";
 import UniversalVideoPlayer from "@/components/videos/VideoPlayer";
@@ -49,12 +49,12 @@ export default function CaseStudyDetail({ params }) {
 
   return (
     <>
-      <Aside />
-      <TopAdSection />
+      {/* <Aside /> */}
+      {/* <TopAdSection /> */}
       <div className="main">
         <UniversalVideoPlayer url={videoUrl} />
       </div>
-      <BottomAdSection />
+      {/* <BottomAdSection /> */}
     </>
   );
 }

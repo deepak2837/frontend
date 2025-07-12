@@ -111,12 +111,7 @@ export default function QuestionBankContent({
   const handleOptionClick = async (option, questionId) => {
     const isCorrect =
       option === questions.find((q) => q._id === questionId)?.answer;
-    const token = getToken();
-
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
+   
 
     setSelectedOptions((prev) => ({
       ...prev,
@@ -136,7 +131,7 @@ export default function QuestionBankContent({
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+          
             "Content-Type": "application/json",
           },
         }
@@ -252,17 +247,17 @@ export default function QuestionBankContent({
       <div className="space-y-4">
         <div>
           {questions.map((question) => (
-            <div key={question._id} className="border p-4 rounded-xl shadow">
+            <div key={question._id} className="border p-2 rounded-lg shadow-sm max-w-xs sm:max-w-sm md:max-w-md mx-auto min-h-[120px] sm:min-h-[140px] md:min-h-[160px]">
               {question.image && question.image !== "no_image" && (
-                <div className="mb-6 flex justify-center">
-                  <div className="relative w-full max-w-2xl">
+                <div className="mb-3 flex justify-center">
+                  <div className="relative w-full max-w-xs">
                     <Image
                       src={question.image}
                       alt="Question Image"
-                      width={600}
-                      height={200}
-                      className="rounded-md mx-auto object-contain"
-                      style={{ maxHeight: "300px" }}
+                      width={300}
+                      height={100}
+                      className="rounded mx-auto object-contain"
+                      style={{ maxHeight: "120px" }}
                       priority
                       unoptimized={true}
                     />
@@ -270,11 +265,11 @@ export default function QuestionBankContent({
                 </div>
               )}
 
-              <h3 className="text-lg font-semibold mb-4">
+              <h3 className="text-base font-semibold mb-2">
                 {question.question}
               </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {Object.entries(question.options).map(([key, value]) => {
                   const selectedData = selectedOptions[question._id] || {};
                   const isSelected = selectedData.selected === key;
@@ -285,7 +280,7 @@ export default function QuestionBankContent({
                     <button
                       key={key}
                       onClick={() => handleOptionClick(key, question._id)}
-                      className={`border p-2 rounded shadow text-left
+                      className={`border p-1 rounded shadow-sm text-left text-xs
                       ${
                         isSelected
                           ? isWrong
@@ -305,16 +300,16 @@ export default function QuestionBankContent({
               </div>
 
               {selectedOptions[question._id] && (
-                <div className="mt-4">
-                  <p className="text-lg font-semibold">
-                    Correct Answer:{" "}
+                <div className="mt-2">
+                  <p className="text-sm font-semibold">
+                    Correct Answer: {" "}
                     <span className="text-green-600">
                       {`${question.answer}) ${
                         question.options[question.answer]
                       }`}
                     </span>
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-xs text-gray-600">
                     Explanation: {question.explanation}
                   </p>
                 </div>
