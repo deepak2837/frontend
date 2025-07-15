@@ -7,10 +7,21 @@ const useGetBlogDetails = (slugOrId) => {
 
   const { data, isLoading, error, mutate } = useSWR(
     slugOrId ? endpoint : null,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 60000, // 1 minute
+    }
   );
 
-  return { data: data?.data, isLoading, mutate, error };
+  return { 
+    data: data?.data, 
+    isLoading, 
+    mutate, 
+    error,
+    isError: error 
+  };
 };
 
 export default useGetBlogDetails;
