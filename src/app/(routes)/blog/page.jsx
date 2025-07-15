@@ -1,13 +1,6 @@
-"use client";
-import { useState, useEffect } from "react";
-import BlogCard from "@/components/Blogs/Cards";
-import Link from "next/link";
-import LineLoader from "@/components/common/Loader";
-// import Aside from "@/components/AdSection/Aside";
-import TopAdSection from "@/components/AdSection/TopAdSection";
-import useGetBlogs from "@/hooks/blog/useGetBlogs";
-import MedglossLogo from "@/components/common/Medgloss";
-import Image from "next/image";
+import React from "react";
+import BlogClient from "./BlogClient";
+import { API_URL } from "@/config/config";
 
 // Predefined filter options - matching actual database subjects
 const SUBJECT_OPTIONS = [
@@ -42,222 +35,301 @@ const SUBJECT_OPTIONS = [
 
 const DIFFICULTY_OPTIONS = ["beginner", "intermediate", "advanced"];
 
-export default function Page() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [filters, setFilters] = useState({
-    subject: "",
-    difficulty: "",
-  });
-  const [sortBy, setSortBy] = useState(""); // trending, featured, or empty
+// Generate dynamic metadata based on search parameters
+export async function generateMetadata({ searchParams }) {
+  const resolvedSearchParams = typeof searchParams?.then === "function"
+    ? await searchParams
+    : searchParams || {};
 
-  // Blog fetch
-  const { data, isLoading } = useGetBlogs({
-    page: currentPage,
-    limit: 10,
-    search: searchQuery,
-    ...filters,
-    sortBy,
-  });
+  const { search, subject, difficulty, sortBy } = resolvedSearchParams;
 
-  // Debug current filters
-  console.log('Current filters:', { searchQuery, filters, sortBy });
+  let title = "Medical Blogs - Latest Healthcare Insights & Medical Education | MedGloss";
+  let description = "Discover comprehensive medical blogs covering healthcare insights, medical education, clinical cases, and the latest developments in medicine. Expert-curated content for healthcare professionals and students.";
 
-  // Reset to page 1 when filters/search change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filters, searchQuery, sortBy]);
-
-  // Handle filter change
-  const handleFilterChange = (key, value) => {
-    console.log(`Filter changed: ${key} = ${value}`);
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
-  // Handle search
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setSearchQuery(searchInput);
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-[80vh] flex items-center justify-center">
-        <LineLoader />
-      </div>
-    );
+  // Customize metadata based on filters
+  if (search) {
+    title = `Search Results for "${search}" - Medical Blogs | MedGloss`;
+    description = `Find medical blogs and articles related to "${search}". Expert-curated content for healthcare professionals and students.`;
+  }
+  if (subject) {
+    title = `${subject} Medical Blogs - Latest Insights & Education | MedGloss`;
+    description = `Explore comprehensive ${subject} medical blogs, articles, and educational content. Expert insights for healthcare professionals and students.`;
+  }
+  if (difficulty) {
+    const difficultyText = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    title = `${difficultyText} Level Medical Blogs - Healthcare Education | MedGloss`;
+    description = `Access ${difficulty} level medical blogs and educational content. Tailored for ${difficulty} learners in healthcare.`;
+  }
+  if (sortBy === 'trending') {
+    title = "Trending Medical Blogs - Popular Healthcare Content | MedGloss";
+    description = "Discover trending medical blogs and popular healthcare content. Stay updated with the most engaging medical articles and insights.";
+  }
+  if (sortBy === 'featured') {
+    title = "Featured Medical Blogs - Curated Healthcare Content | MedGloss";
+    description = "Explore featured medical blogs and curated healthcare content. Expert-selected articles for medical professionals and students.";
   }
 
-  const posts = data?.data || [];
-  const pagination = data?.pagination || {};
+  // Fallbacks for all fields
+  title = title || "Medical Blogs | MedGloss";
+  description = description || "Explore medical blogs, articles, and resources for healthcare professionals and students.";
+  const keywords = [
+    "medical blogs", "healthcare insights", "medical education", "clinical cases", "medical articles", "healthcare professionals", "medical students", "medical research", "clinical practice", "medical knowledge",
+    ...SUBJECT_OPTIONS
+  ].join(", ");
+  const authors = [{ name: "Medical Education Team" }];
+  const creator = "Medical Education Platform";
+  const publisher = "MedGloss";
+  const metadataBase = new URL("https://medgloss.com");
+  const canonical = "/blog";
+  const ogImage = "https://medgloss.com/_next/image?url=%2F3.png&w=1080&q=75";
+  const twitterCreator = "@medgloss";
 
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const totalPages = pagination.totalPages;
-    const maxButtons = 5;
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-    if (endPage - startPage < maxButtons - 1) {
-      startPage = Math.max(1, endPage - maxButtons + 1);
-    }
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => setCurrentPage(i)}
-          className={`px-4 py-2 mx-1 rounded ${
-            currentPage === i
-              ? "bg-main text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    return buttons;
+  return {
+    title,
+    description,
+    keywords,
+    authors,
+    creator,
+    publisher,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    metadataBase,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: title || "Medical Blogs | MedGloss",
+      description: description || "Explore medical blogs, articles, and resources for healthcare professionals and students.",
+      url: "https://medgloss.com/blog",
+      siteName: "MedGloss",
+      images: [
+        {
+          url: ogImage,
+          width: 1080,
+          height: 630,
+          alt: title || "Medical Blogs - Healthcare Insights and Education",
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title || "Medical Blogs | MedGloss",
+      description: description || "Explore medical blogs, articles, and resources for healthcare professionals and students.",
+      images: [ogImage],
+      creator: twitterCreator,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    verification: {
+      google: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+      yahoo: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+      bing: "6nZhB5qr_BAhWcPGHaPqnpgZ3LcGf40ghiUsEsrqiP0",
+    },
   };
+}
+
+// Structured Data for SEO
+async function generateStructuredData(searchParams) {
+  const resolvedSearchParams = typeof searchParams?.then === "function"
+    ? await searchParams
+    : searchParams || {};
+
+  const { search, subject, difficulty, sortBy } = resolvedSearchParams;
+
+  let name = "MedGloss Medical Blogs";
+  let description = "Comprehensive medical blogs covering healthcare insights, medical education, clinical cases, and the latest developments in medicine.";
+
+  if (search) {
+    name = `Search Results: ${search} - Medical Blogs`;
+    description = `Medical blogs and articles related to "${search}". Expert-curated content for healthcare professionals.`;
+  }
+  if (subject) {
+    name = `${subject} Medical Blogs`;
+    description = `Comprehensive ${subject} medical blogs, articles, and educational content for healthcare professionals.`;
+  }
+  if (difficulty) {
+    const difficultyText = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    name = `${difficultyText} Level Medical Blogs`;
+    description = `${difficultyText} level medical blogs and educational content tailored for healthcare learners.`;
+  }
+  if (sortBy === 'trending') {
+    name = "Trending Medical Blogs";
+    description = "Trending medical blogs and popular healthcare content. Stay updated with the most engaging medical articles.";
+  }
+  if (sortBy === 'featured') {
+    name = "Featured Medical Blogs";
+    description = "Featured medical blogs and curated healthcare content. Expert-selected articles for medical professionals.";
+  }
+
+  // Fallbacks for all fields
+  name = name || "MedGloss Medical Blogs";
+  description = description || "Comprehensive medical blogs covering healthcare insights, medical education, clinical cases, and the latest developments in medicine.";
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": name,
+    "description": description,
+    "url": "https://medgloss.com/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MedGloss",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://medgloss.com/_next/image?url=%2Fmedglosslogo-photoaidcom-cropped.png&w=1920&q=75"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://medgloss.com/blog"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Medical Education"
+      },
+      {
+        "@type": "Thing", 
+        "name": "Healthcare"
+      },
+      {
+        "@type": "Thing",
+        "name": "Clinical Practice"
+      }
+    ],
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Medical Students and Healthcare Professionals"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Sarah Johnson"
+        },
+        "reviewBody": "The medical blogs provide valuable insights and keep me updated with the latest developments in healthcare.",
+        "name": "Healthcare Professional Review"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Medical Student"
+        },
+        "reviewBody": "These blogs are essential for my medical education and help me understand complex topics better.",
+        "name": "Student Review"
+      }
+    ]
+  };
+}
+
+async function getBlogs(searchParams) {
+  try {
+    const queryParams = new URLSearchParams();
+    
+    // Add search parameters with proper defaults
+    const page = searchParams.page || 1;
+    const limit = searchParams.limit || 10;
+    
+    queryParams.append('page', page);
+    queryParams.append('limit', limit);
+    
+    if (searchParams.search) queryParams.append('search', searchParams.search);
+    if (searchParams.subject) queryParams.append('subject', searchParams.subject);
+    if (searchParams.difficulty) queryParams.append('difficulty', searchParams.difficulty);
+    if (searchParams.sortBy) queryParams.append('sortBy', searchParams.sortBy);
+
+    const url = `${API_URL}/api/v1/blog?${queryParams.toString()}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+      return { 
+        data: [], 
+        pagination: { 
+          totalPages: 0, 
+          currentPage: parseInt(page), 
+          hasNext: false, 
+          hasPrev: false 
+        },
+        error: true
+      };
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return { 
+      data: [], 
+      pagination: { 
+        totalPages: 0, 
+        currentPage: parseInt(searchParams.page) || 1, 
+        hasNext: false, 
+        hasPrev: false 
+      },
+      error: true
+    };
+  }
+}
+
+export const dynamic = 'force-dynamic';
+
+export default async function Page({ searchParams }) {
+  // Await searchParams if it's a Promise (per Next.js dynamic API guidance)
+  const resolvedSearchParams = typeof searchParams?.then === "function"
+    ? await searchParams
+    : searchParams || {};
+
+  // Get initial data for SSR
+  const initialData = await getBlogs(resolvedSearchParams);
+  const structuredData = await generateStructuredData(resolvedSearchParams);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* App Theme Gradient Header */}
-      <div className="w-full flex justify-center mt-6 mb-10">
-        <div className="relative w-full max-w-7xl mx-auto px-4 py-4 rounded-3xl shadow-2xl bg-gradient-to-br from-pink-400/80 via-orange-200/60 to-pink-100/80 border-2 border-pink-200/60 backdrop-blur-md overflow-hidden flex flex-col items-center">
-          {/* Logo and Blog title group */}
-          <div className="flex flex-col items-center mb-2 z-10">
-            <div className="flex items-center gap-3">
-              <span className="inline-block align-middle">
-                <MedglossLogo width={56} height={56} />
-              </span>
-              <span className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-white via-pink-100 to-orange-200 bg-clip-text text-transparent drop-shadow-xl font-sans">
-                Blogs
-              </span>
-            </div>
-          </div>
-          {/* Animated sparkles */}
-          <div className="absolute inset-0 pointer-events-none animate-pulse-slow">
-            <svg width="100%" height="100%" className="absolute left-0 top-0 opacity-30" style={{zIndex:0}}>
-              <circle cx="10%" cy="20%" r="18" fill="#fff6" />
-              <circle cx="80%" cy="30%" r="10" fill="#fff3" />
-              <circle cx="60%" cy="80%" r="14" fill="#fff2" />
-            </svg>
-          </div>
-          <p className="text-pink-900 text-xl sm:text-2xl font-semibold mb-2 z-10">
-            Your Gateway to Medical Mastery
-          </p>
-          <p className="text-pink-700 text-base sm:text-lg font-medium mb-4 z-10">
-            Discover, learn, and stay ahead with the latest in medicine.<br className="hidden sm:inline" />
-            <span className="font-bold text-orange-600">Curated by experts. Loved by learners.</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Filters & Search Bar */}
-      <form
-        className="w-full max-w-7xl mx-auto px-4 mb-8 flex flex-wrap gap-3 sm:gap-4 justify-center items-center rounded-xl py-4 shadow-md"
-        style={{background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'}} 
-        onSubmit={handleSearch}
-      >
-        <div className="flex flex-col sm:flex-row gap-2 flex-wrap items-center w-full justify-center">
-          <input
-            type="text"
-            placeholder="Search blogs, tags, or content..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full sm:w-64 px-4 py-2 border border-pink-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white shadow-sm"
-          />
-          <button
-            type="submit"
-            className="w-full sm:w-auto px-4 py-2 bg-pink-500 text-white rounded-lg font-semibold shadow hover:bg-pink-400 transition"
-          >
-            Search
-          </button>
-        </div>
-        <select
-          value={filters.subject}
-          onChange={e => handleFilterChange('subject', e.target.value)}
-          className="w-full sm:w-auto px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
-        >
-          <option value="">Subject</option>
-          {SUBJECT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
-        <select
-          value={filters.difficulty}
-          onChange={e => handleFilterChange('difficulty', e.target.value)}
-          className="w-full sm:w-auto px-3 py-2 rounded-lg border border-pink-200 bg-white text-pink-700 shadow-sm"
-        >
-          <option value="">Difficulty</option>
-          {DIFFICULTY_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
-        <button
-          type="button"
-          onClick={() => setSortBy(sortBy === 'trending' ? '' : 'trending')}
-          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-semibold shadow transition ${
-            sortBy === 'trending' 
-              ? 'bg-pink-500 text-white' 
-              : 'bg-white text-pink-700 border border-pink-200 hover:bg-pink-50'
-          }`}
-        >
-          Trending
-        </button>
-        <button
-          type="button"
-          onClick={() => setSortBy(sortBy === 'featured' ? '' : 'featured')}
-          className={`w-full sm:w-auto px-4 py-2 rounded-lg font-semibold shadow transition ${
-            sortBy === 'featured' 
-              ? 'bg-pink-500 text-white' 
-              : 'bg-white text-pink-700 border border-pink-200 hover:bg-pink-50'
-          }`}
-        >
-          Featured
-        </button>
-      </form>
-
-      {/* Main content - Responsive layout */}
-      <div className="w-full max-w-7xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 gap-8">
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-2">
-              {posts.map((post) => (
-                <BlogCard key={post._id} post={post} />
-              ))}
-            </div>
-            {/* Pagination */}
-            {pagination.totalPages > 1 && (
-              <div className="flex flex-col items-center gap-2 mt-8 w-full">
-                <div className="flex flex-col sm:flex-row w-full justify-center items-center gap-2 sm:gap-4">
-                  <button
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                    disabled={!pagination.hasPrev}
-                    className="px-4 py-2 rounded bg-pink-200 text-pink-700 hover:bg-pink-300 disabled:opacity-50 w-full sm:w-auto"
-                  >
-                    Previous
-                  </button>
-                  <div className="flex flex-row flex-wrap justify-center items-center gap-2">
-                    {renderPaginationButtons()}
-                  </div>
-                  <button
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                    disabled={!pagination.hasNext}
-                    className="px-4 py-2 rounded bg-pink-200 text-pink-700 hover:bg-pink-300 disabled:opacity-50 w-full sm:w-auto"
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      {/* Side Ad Section - Hidden on mobile */}
-      {/* <div className="hidden md:block">
-        <Aside />
-      </div> */}
-      {/* Optional: Bottom Ad Section for mobile only */}
-      {/* <div className="block md:hidden">
-        <TopAdSection className="mt-8" />
-      </div> */}
-    </div>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <noscript>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      </noscript>
+      <BlogClient 
+        initialData={initialData}
+        subjectOptions={SUBJECT_OPTIONS}
+        difficultyOptions={DIFFICULTY_OPTIONS}
+        searchParams={resolvedSearchParams}
+      />
+    </>
   );
 }

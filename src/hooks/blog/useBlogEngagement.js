@@ -81,16 +81,18 @@ const useBlogEngagement = (blogId) => {
       } else {
         const errorData = await response.json();
         console.error('Failed to update like status:', errorData);
+        // Don't throw error, just log it
       }
     } catch (error) {
       console.error('Error updating like status:', error);
+      // Don't throw error, just log it
     } finally {
       setIsLoading(false);
     }
   };
 
   const updateLikeCount = (count) => {
-    setLikeCount(count);
+    setLikeCount(count || 0);
   };
 
   return {
