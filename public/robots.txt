@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://medgloss.com
+
+# Sitemaps
+Sitemap: https://medgloss.com/sitemap.xml
