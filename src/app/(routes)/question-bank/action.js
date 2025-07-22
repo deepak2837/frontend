@@ -45,19 +45,36 @@ export async function fetchQuestionBankData(id, page = 1, filters = {}) {
     );
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
+      return {
+        success: false,
+        error: `Error: ${response.status}`,
+        data: {
+          questions: [],
+          pagination: { totalPages: 0, currentPage: page, limit: 5 },
+          stats: { totalAnsweredCorrectly: 0 },
+        },
+      };
     }
 
     const data = await response.json();
-    return { success: true, data: data.data };
+    // Always provide fallbacks for missing fields
+    return {
+      success: true,
+      data: {
+        questions: data?.data?.questions || [],
+        pagination: data?.data?.pagination || { totalPages: 1, currentPage: page, limit: 5 },
+        stats: data?.data?.stats || { totalAnsweredCorrectly: 0 },
+        ...data?.data,
+      },
+    };
   } catch (error) {
-    console.error("Error fetching question bank data:", error);
     return {
       success: false,
       error: error.message,
       data: {
         questions: [],
-        pagination: { totalPages: 0, currentPage: page },
+        pagination: { totalPages: 0, currentPage: page, limit: 5 },
+        stats: { totalAnsweredCorrectly: 0 },
       },
     };
   }

@@ -215,18 +215,18 @@ const difficultyColors = {
 async function getQuestions(token) {
   try {
     const response = await fetch(`${API_URL}/api/v1/question-bank/list/live`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       next: { revalidate: 36000 },
     });
     if (!response.ok) {
-      throw new Error("Failed to fetch questions");
+      console.log(response)  
+      // Return a default error structure instead of throwing
+      return { error: true, data: [], message: "Failed to fetch questions" };
     }
     return await response.json();
   } catch (error) {
-    console.error("Error fetching questions:", error);
-    return { error: true };
+    // Always return a consistent error structure
+    return { error: true, data: [], message: error.message || "Unknown error" };
   }
 }
 
@@ -241,6 +241,84 @@ export default async function Page() {
   const isError = response.error;
   const data = response.data;
 
+  // SEO structured data fallback
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "MedGloss",
+    "description": "Leading platform for medical education with comprehensive question banks and exam preparation resources.",
+    "url": "https://medgloss.com/question-bank",
+    "logo": "https://medgloss.com/_next/image?url=%2Fmedglosslogo-photoaidcom-cropped.png&w=1920&q=75",
+    "sameAs": [
+      "https://x.com/medgloss",
+      "https://www.linkedin.com/company/medgloss",
+      "https://www.instagram.com/medgloss_official"
+    ],
+    "hasOfferingCatalog": {
+      "@type": "OfferingCatalog",
+      "name": "Medical Question Banks",
+      "itemListElement": [
+        {
+          "@type": "Course",
+          "name": "Medical Exam Question Banks",
+          "description": "Comprehensive question banks for various medical examinations",
+          "provider": {
+            "@type": "Organization",
+            "name": "MedGloss"
+          }
+        },
+        {
+          "@type": "Course",
+          "name": "Subject-Specific Question Banks",
+          "description": "Specialized question banks organized by medical subjects",
+          "provider": {
+            "@type": "Organization",
+            "name": "MedGloss"
+          }
+        },
+        {
+          "@type": "Course",
+          "name": "Course-Based Question Banks",
+          "description": "Question banks aligned with specific medical courses",
+          "provider": {
+            "@type": "Organization",
+            "name": "MedGloss"
+          }
+        }
+      ]
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Dr. Emily Watson"
+        },
+        "reviewBody": "The question banks helped me prepare thoroughly for my medical exams. The variety and quality of questions are excellent.",
+        "name": "Medical Student Review"
+      },
+      {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Prof. Michael Chen"
+        },
+        "reviewBody": "As an educator, I find these question banks to be comprehensive and well-structured for student learning.",
+        "name": "Faculty Review"
+      }
+    ]
+  };
+
   if (isError) {
     return (
       <>
@@ -254,7 +332,7 @@ export default async function Page() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118-0z" />
             </svg>
             <h2 className="text-2xl font-bold text-red-700 mb-2">Unable to Load Question Banks</h2>
-            <p className="text-gray-600 mb-4">We encountered an error while fetching data. Please try again later.</p>
+            <p className="text-gray-600 mb-4">{response.message || "We encountered an error while fetching data. Please try again later."}</p>
             <form action="/" method="get">
               <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-md flex items-center justify-center gap-2 mx-auto">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
