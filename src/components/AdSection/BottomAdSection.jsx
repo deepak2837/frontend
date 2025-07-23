@@ -1,5 +1,5 @@
 import React from 'react';
-import './AdSection.module.css'; 
+
 
 const BottomAdSection = () => {
   return (

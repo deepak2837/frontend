@@ -31,15 +31,7 @@ export default function RootLayout({ children, Component, pageProps }) {
   return (
     <html lang="en">
       <head>
-        <meta name="fast2sms" content="wEtt2Ocsm8yfOAx738UzmMm4RTpHCLNt" />
-        {/* Google AdSense Meta Tag */}
-        <meta name="google-adsense-account" content="ca-pub-3706062176737311" />
-        {/* Google AdSense Script */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3706062176737311"
-          crossOrigin="anonymous"
-        ></script>
+        {/* Remove Google AdSense Meta Tag and Script */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -49,7 +41,7 @@ export default function RootLayout({ children, Component, pageProps }) {
           <AuthInitializer />
           <Header />
           {/* <Aside/> */}
-          {/* <TopAdSection/> */}
+          {/* Remove TopAdSection and BottomAdSection references */}
           <main className="flex-1 bg-white z-10 w-full">
             {children}
           </main>
