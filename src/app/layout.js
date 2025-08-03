@@ -34,6 +34,7 @@ export default function RootLayout({ children, Component, pageProps }) {
         {/* Google tag (gtag.js) */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-CRVPXNP38V"></Script>
         <Script
+          id="google-analytics"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
