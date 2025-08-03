@@ -33,6 +33,8 @@ export default function RootLayout({ children, Component, pageProps }) {
       <head>
         {/* Google tag (gtag.js) */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-CRVPXNP38V"></Script>
+        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5697744162151946"
+     crossorigin="anonymous"></Script>
         <Script
           id="google-analytics"
           dangerouslySetInnerHTML={{
