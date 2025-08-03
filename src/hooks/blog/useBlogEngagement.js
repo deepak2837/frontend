@@ -95,12 +95,38 @@ const useBlogEngagement = (blogId) => {
     setLikeCount(count || 0);
   };
 
+  const trackBlogView = async () => {
+    if (!blogId) {
+      console.error('Blog ID is required for view tracking');
+      return;
+    }
+
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+      const response = await fetch(`${baseUrl}/api/v1/blog-engagement/${blogId}/view`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log('Blog view tracked successfully');
+      } else {
+        console.error('Failed to track blog view');
+      }
+    } catch (error) {
+      console.error('Error tracking blog view:', error);
+    }
+  };
+
   return {
     isLiked,
     likeCount,
     isLoading,
     toggleLike,
-    updateLikeCount
+    updateLikeCount,
+    trackBlogView
   };
 };
 

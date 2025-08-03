@@ -9,18 +9,20 @@ export default function BlogPostClient({ blog }) {
   const router = useRouter();
   
   // Use the blog engagement hook
-  const { isLiked, likeCount, isLoading: likeLoading, toggleLike, updateLikeCount } = useBlogEngagement(blog?._id);
+  const { isLiked, likeCount, isLoading: likeLoading, toggleLike, updateLikeCount, trackBlogView } = useBlogEngagement(blog?._id);
 
   // Carousel state for related posts
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
+  const [viewTracked, setViewTracked] = useState(false);
 
   // Calculate how many cards to show based on screen size
   const getCardsToShow = () => {
     if (typeof window === 'undefined') return 3;
-    if (window.innerWidth < 640) return 1; // mobile
-    if (window.innerWidth < 1024) return 2; // tablet
-    return 3; // desktop
+    if (window.innerWidth < 640) return 1; // mobile - show 1
+    if (window.innerWidth < 1024) return 2; // tablet - show 2
+    if (window.innerWidth < 1280) return 3; // laptop - show 3
+    return 4; // desktop - show 4
   };
 
   const [cardsToShow, setCardsToShow] = useState(3);
@@ -48,6 +50,19 @@ export default function BlogPostClient({ blog }) {
       updateLikeCount(blog.likeCount || 0);
     }
   }, [blog?._id, updateLikeCount]);
+
+  // Track blog view when component mounts (works with SSG) - only once
+  useEffect(() => {
+    if (blog?._id && !viewTracked) {
+      // Add a small delay to ensure component is fully mounted
+      const timer = setTimeout(() => {
+        trackBlogView();
+        setViewTracked(true);
+      }, 200000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [blog?._id, trackBlogView, viewTracked]);
 
   if (!blog) {
     return (
@@ -100,16 +115,26 @@ export default function BlogPostClient({ blog }) {
               <span>• {blog?.viewCount} views</span>
               
               {/* Like Button - Moved to header */}
-              <div className="flex items-center gap-2 ml-4 min-w-[80px]">
+              <div className="flex items-center gap-2 ml-4 min-w-[80px] relative z-10">
                 <button
-                  onClick={toggleLike}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleLike();
+                  }}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleLike();
+                  }}
                   disabled={likeLoading}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all duration-300 transform hover:scale-105 ${
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all duration-300 transform hover:scale-105 touch-manipulation ${
                     isLiked
                       ? "bg-gradient-to-r from-red-400 to-pink-500 text-white shadow-lg"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   } ${likeLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                   aria-label={`${isLiked ? 'Unlike' : 'Like'} this post`}
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <svg
                     className={`w-4 h-4 ${isLiked ? 'animate-pulse' : ''}`}
@@ -155,12 +180,14 @@ export default function BlogPostClient({ blog }) {
 
           {/* Cover Image with SEO alt text */}
           {blog?.coverImage && blog.coverImage !== "no_image" && (
-            <div className="mb-8 relative aspect-[16/9] w-full">
+            <div className="mb-8 relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[21/9] xl:aspect-[25/9] w-full">
               <Image
                 src={blog.coverImage}
                 alt={blog.seo?.metaTitle || blog.title}
                 fill
                 className="object-cover rounded-lg"
+                
+                
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 800px"
               />
@@ -263,7 +290,7 @@ export default function BlogPostClient({ blog }) {
               </div>
               
               {/* Carousel Container */}
-              <div className="relative">
+              <div className="relative max-w-6xl mx-auto">
                 {/* Navigation Arrows */}
                 {currentSlide > 0 && (
                   <button
@@ -298,24 +325,26 @@ export default function BlogPostClient({ blog }) {
                     className="flex transition-transform duration-500 ease-in-out"
                     style={{
                       transform: `translateX(-${currentSlide * (100 / cardsToShow)}%)`,
-                      width: `${(blog.relatedResources.length / cardsToShow) * 100}%`
+                      width: `${(blog.relatedResources.length / cardsToShow-1) * 100}%`
                     }}
                   >
                     {blog.relatedResources.map((relatedPost, index) => (
                       <div
                         key={relatedPost._id || index}
-                        className="flex-shrink-0"
-                        style={{ width: `${100 / blog.relatedResources.length}%` }}
+                        className="flex-shrink-0 px-2"
+                        style={{ width: `${100 / cardsToShow}%` }}
                       >
-                        <div className="px-2">
+                        <div 
+                          className="cursor-pointer h-full"
+                          onClick={() => router.push(`/blog/${relatedPost.slug}`)}
+                        >
                           <article
-                            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 overflow-hidden group"
-                            onClick={() => router.push(`/blog/${relatedPost.slug}`)}
+                            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden group h-full max-w-[290px]"
                           >
                             {/* Cover Image */}
                             <div className="relative h-32 overflow-hidden">
                               <Image
-                                src={relatedPost.coverImage || '/placeholder-blog.jpg'}
+                                src={relatedPost.coverImage =="no_image" ? '/placeholder-blog.jpg':relatedPost.coverImage}
                                 alt={relatedPost.title}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -384,7 +413,7 @@ export default function BlogPostClient({ blog }) {
       {/* Footer - This ensures the footer stays at the bottom */}
       <footer className="z-10 mt-auto w-full bg-gray-50 border-t border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-4 text-center text-gray-600 text-sm">
-          © 2024 MedGloss. All rights reserved.
+          © 2025 MedGloss. All rights reserved.
         </div>
       </footer>
     </div>

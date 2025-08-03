@@ -8,7 +8,7 @@ import { NotFound } from "./error";
 export const dynamic = "force-dynamic"; // Make sure this page is not statically generated
 
 export async function generateMetadata({ params }) {
-  const { id } = params;
+  const { id } = await params;
   // You can fetch minimal data here just for metadata if needed
   return {
     title: `Mock Test Result #${id} | Medical Examination`,
@@ -18,10 +18,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ResultPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   // Check authentication
-  const session = getAuthToken();
+  const session = await getAuthToken();
   console.log("SESSION", session);
   if (!session) {
     redirect("/login");

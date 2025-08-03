@@ -5,7 +5,7 @@ import NewFooter from "@/components/common/NewFooter";
 import ToastProvider from "@/components/Toast";
 import SecurityWrapper from "@/components/screenshot/SecurityWrapper";
 import AuthInitializer from "@/components/common/AuthInitializer";
-
+import Script from "next/script";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -31,7 +31,21 @@ export default function RootLayout({ children, Component, pageProps }) {
   return (
     <html lang="en">
       <head>
-        {/* Remove Google AdSense Meta Tag and Script */}
+        {/* Google tag (gtag.js) */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-CRVPXNP38V"></Script>
+        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5697744162151946"
+     crossorigin="anonymous"></Script>
+        <Script
+          id="google-analytics"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CRVPXNP38V');
+            `,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

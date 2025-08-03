@@ -312,18 +312,30 @@ export default function MedicalExamContent({
                   </div>
 
                   {/* Button - Less padding */}
-                  <button
-                    onClick={() =>
-                      router.push(`/mock-test/take-test/${test?._id}`)
-                    }
-                    className="w-full text-white py-2 px-4 rounded-md font-medium transition flex items-center justify-center gap-1 text-sm"
-                    style={{
-                      background:
-                        "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-                    }}
-                  >
-                    {test?.isAttempted ? `Re-Attempt Exam` : `Start Exam`}
-                  </button>
+                  {test?.status?.toLowerCase() === 'draft' ? (
+                    <button
+                      disabled
+                      className="w-full text-white py-2 px-4 rounded-md font-medium transition flex items-center justify-center gap-1 text-sm cursor-not-allowed opacity-70"
+                      style={{
+                        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                      }}
+                    >
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        router.push(`/mock-test/take-test/${test?._id}`)
+                      }
+                      className="w-full text-white py-2 px-4 rounded-md font-medium transition flex items-center justify-center gap-1 text-sm hover:opacity-90"
+                      style={{
+                        background:
+                          "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                      }}
+                    >
+                      {test?.isAttempted ? `Re-Attempt Exam` : `Start Exam`}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

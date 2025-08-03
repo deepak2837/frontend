@@ -244,7 +244,7 @@ export default function BlogClient({ initialData, subjectOptions, difficultyOpti
                   </div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-2 justify-items-center">
                       {posts.map((post) => (
                         <BlogCard key={post._id} post={post} />
                       ))}

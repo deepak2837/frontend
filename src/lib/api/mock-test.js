@@ -19,8 +19,8 @@ export async function getMockTestResult(id, token) {
   console.log("ID, token", id, token);
 
   try {
-    // Replace with your actual API endpoint
-    const response = await fetch(`${BASE_URL}/api/v1/results/test/${id}/user`, {
+    // Use the result ID endpoint instead of test/user endpoint
+    const response = await fetch(`${BASE_URL}/api/v1/results/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
