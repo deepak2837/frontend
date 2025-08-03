@@ -10,7 +10,7 @@ export async function POST() {
     cookieStore.delete("auth_token", {
       path: "/",
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict"
     });
     
@@ -18,7 +18,7 @@ export async function POST() {
     cookieStore.delete("token", {
       path: "/",
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict"
     });
 

@@ -121,18 +121,19 @@ export default function TakeTest() {
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
       };
 
+      const token = getToken();
       const response = await axios.post(
         `${BASE_URL}/api/v1/mock-test/submit-attempt/${data?.data?.attemptId}`,
         formData,
         {
-          headers: { Authorization: `Bearer ${getToken()}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (response?.data?.success && response?.data?.data?.testId) {
+      if (response?.data?.success && response?.data?.data?.attemptId) {
         exitFullscreen();
         setIsSubmitted(true);
-        setSubmittedTestId(response.data.data.testId);
+        setSubmittedTestId(response.data.data.attemptId); // Use attemptId which is actually the result ID
         sessionStorage.setItem("testSubmitted", "true");
         sessionStorage.setItem("testId", id);
         sessionStorage.setItem("attemptId", response.data.data.attemptId);
@@ -148,6 +149,7 @@ export default function TakeTest() {
 
   const handleFeedbackSubmit = async () => {
     try {
+      const token = getToken();
       await axios.post(
         `${BASE_URL}/api/v1/feedback`,
         {
@@ -156,7 +158,7 @@ export default function TakeTest() {
           comment: feedback.comment,
         },
         {
-          headers: { Authorization: `Bearer ${getToken()}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       router.push(`/mock-test/result/${submittedTestId}`);

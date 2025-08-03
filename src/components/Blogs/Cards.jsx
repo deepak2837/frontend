@@ -13,8 +13,8 @@ const BlogCard = ({ post }) => {
 
   return (
     <div
-      className="rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/20 flex flex-col group relative bg-gradient-to-br from-white/60 via-pink-50 to-orange-50 backdrop-blur-md hover:scale-[1.03] hover:border-pink-300"
-      style={{ minHeight: 260, maxWidth: 320 }}
+      className="rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/20 flex flex-col group relative bg-gradient-to-br from-white/60 via-pink-50 to-orange-50 backdrop-blur-md hover:scale-[1.03] hover:border-pink-300 w-full max-w-[320px]"
+      style={{ minHeight: 260 }}
     >
       {/* Image with glass overlay */}
       <div className="relative w-full h-32 sm:h-28 overflow-hidden">
