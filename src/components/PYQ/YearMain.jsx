@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import mbbsCollegeList from "@/lib/mbbs_college_list.json"; // Your JSON data
 import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation"; // To get dynamic slug
+import { useParams } from "next/navigation";
 import { Download, Eye } from "lucide-react";
 import styles from './Year.module.css';
+import { getYearsForUniversityCourseSubject, getPYQPapers } from "@/services/pyqService";
+import SpinnerLoader from "../spinner/SpinnerLoader";
 const YearCards = ({ name, universityName, coursename, subjectName }) => {
 
   const router = useRouter();
@@ -49,49 +50,68 @@ const YearCards = ({ name, universityName, coursename, subjectName }) => {
 
 const YearMain = () => {
   const [years, setYears] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const params = useParams(); // Get dynamic slug from URL
-  const selectedSubject = params.subject; // Assume the slug format is subjectSlug
-  // console.log(selectedSubject);
-  // console.log(params)  
-  const handleClick = ()=>{
+  const params = useParams();
+  const selectedSubject = params.subject;
+  
+  const handleClick = () => {
     router.back()
   }
 
-
   useEffect(() => {
-    // Find the college based on the subjectSlug
-    const collegeData = mbbsCollegeList.find((college) =>
-      college.subjects
-        .map((subjectName) => subjectName.toLowerCase().replace(/\s+/g, "-"))
-        .includes(selectedSubject)
+    const fetchYears = async () => {
+      try {
+        setLoading(true);
+        const universityName = decodeURIComponent(params.universityname.replace(/-/g, " "));
+        const courseName = decodeURIComponent(params.coursename.replace(/-/g, " "));
+        const subjectName = decodeURIComponent(selectedSubject.replace(/-/g, " "));
+        
+        const yearsData = await getYearsForUniversityCourseSubject(universityName, courseName, subjectName);
+        setYears(yearsData);
+      } catch (error) {
+        console.error('Error fetching years:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchYears();
+  }, [selectedSubject, params.universityname, params.coursename]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <SpinnerLoader />
+      </div>
     );
-    // console.log(collegeData,"data");
-    
-    // If college and subject are found, set the yearsArray from the JSON data
-    if (collegeData && collegeData.years) {
-      setYears(collegeData.years); // Set the array of years for the selected subject
-    }
-  }, [selectedSubject]);
+  }
 
   return (
     <div className="bg-white h-full md:mb-20 mb-5">
       <div className="">
         <div className="flex flex-col md:flex-row justify-start items-center mt-5 mx-4 gap-5">
-        <button className="px-3 py-3 bg-custom-gradient  rounded-3xl text-white text-sm"> Download All Papers</button>
-       
-        <button onClick={handleClick} className="px-3 py-3 border-2 border-[#FE6B8B] rounded-3xl text-[#FE6B8B] text-sm">Search another subject </button>
-        
+          <button className="px-3 py-3 bg-custom-gradient rounded-3xl text-white text-sm">
+            Download All Papers
+          </button>
+          <button onClick={handleClick} className="px-3 py-3 border-2 border-[#FE6B8B] rounded-3xl text-[#FE6B8B] text-sm">
+            Search another subject
+          </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 py-8 bg-white">
-          {years.length > 0 ? (
-            years.map((year, index) => (
+        {years.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 py-8 bg-white">
+            {years.map((year, index) => (
               <YearCards key={index} name={year} universityName={params.universityname} coursename={params.coursename} subjectName={params.subject} />
-            ))
-          ) : (
-            <p>No years available for this subject.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center min-h-96">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No Years Available</h3>
+              <p className="text-gray-500">No years found for this subject.</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

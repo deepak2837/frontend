@@ -5,6 +5,7 @@ import NewFooter from "@/components/common/NewFooter";
 import ToastProvider from "@/components/Toast";
 import SecurityWrapper from "@/components/screenshot/SecurityWrapper";
 import AuthInitializer from "@/components/common/AuthInitializer";
+import AdsterraAd from "@/components/AdSection/AdsterraAd";
 import Script from "next/script";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,8 +47,6 @@ export default function RootLayout({ children, Component, pageProps }) {
         />
         {/* Google tag (gtag.js) */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-CRVPXNP38V"></Script>
-        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5697744162151946"
-     crossorigin="anonymous"></Script>
         <Script
           id="google-analytics"
           dangerouslySetInnerHTML={{
@@ -82,6 +81,9 @@ export default function RootLayout({ children, Component, pageProps }) {
           <main className="flex-1 bg-white z-10 w-full">
             {children}
           </main>
+          
+          {/* Adsterra Ad - positioned between main content and footer */}
+          <AdsterraAd />
 
           {/* <BottomAdSection/> */}
           <footer className="z-10 mt-auto w-full">
