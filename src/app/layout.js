@@ -76,6 +76,7 @@ export default function RootLayout({ children, Component, pageProps }) {
           <SecurityWrapper />
           <AuthInitializer />
           <Header />
+             <AdsterraAd />
           {/* <Aside/> */}
           {/* Remove TopAdSection and BottomAdSection references */}
           <main className="flex-1 bg-white z-10 w-full">
