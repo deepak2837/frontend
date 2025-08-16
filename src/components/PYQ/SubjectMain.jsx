@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import mbbsCollegeList from "@/lib/mbbs_college_list.json"; // Your JSON data
 import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation"; // To get dynamic slug
+import { useParams } from "next/navigation";
 import styles from './CollegeCard.module.css';
+import { getSubjectsForUniversityAndCourse } from "@/services/pyqService";
+import SpinnerLoader from "../spinner/SpinnerLoader";
 const SubjectCards = ({ name, universityName,coursename }) => {
 console.log(universityName,"uni");
 const router = useRouter();
@@ -40,38 +41,55 @@ const router = useRouter();
 
 const SubjectMain = () => {
   const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
  
-  const params = useParams(); // Get dynamic slug from URL
-  const selectedCourse = params.coursename; // Assume the slug format is courseSlug
+  const params = useParams();
+  const selectedCourse = params.coursename;
 
   useEffect(() => {
-    // Find the course based on the dynamic courseSlug
-    const courseData = mbbsCollegeList.find((college) =>
-      college.course
-        .map((courseName) => courseName.toLowerCase().replace(/\s+/g, "-"))
-        .includes(selectedCourse)
-    );
+    const fetchSubjects = async () => {
+      try {
+        setLoading(true);
+        const universityName = decodeURIComponent(params.universityname.replace(/-/g, " "));
+        const courseName = decodeURIComponent(selectedCourse.replace(/-/g, " "));
+        
+        const subjectsData = await getSubjectsForUniversityAndCourse(universityName, courseName);
+        setSubjects(subjectsData);
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // If course is found, set subjects
-    console.log(courseData);
+    fetchSubjects();
+  }, [selectedCourse, params.universityname]);
   
-    if (courseData) {
-      setSubjects(courseData.subjects); // Set the array of subjects (from course)
-    }
-  }, [selectedCourse]);
-  
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <SpinnerLoader />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white h-full md:mb-20 mb-5">
       <div className="">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 py-8 bg-white">
-          {subjects.length > 0 ? (
-            subjects.map((subject, index) => (
+        {subjects.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 py-8 bg-white">
+            {subjects.map((subject, index) => (
               <SubjectCards key={index} name={subject} universityName={params.universityname} coursename={selectedCourse} />
-            ))
-          ) : (
-            <p>No subjects available for this course.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center min-h-96">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No Subjects Available</h3>
+              <p className="text-gray-500">No subjects found for this course.</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

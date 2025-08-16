@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import mbbsCollegeList from "@/lib/mbbs_college_list.json"; // Import the JSON data
-import { useParams } from "next/navigation"; // Import useParams for dynamic routes
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import styles from './CollegeCard.module.css';
+import { getCoursesForUniversity } from "@/services/pyqService";
+import SpinnerLoader from "../spinner/SpinnerLoader";
 const CourseCards = ({ name, universityName }) => {
 
   const router = useRouter();
@@ -40,49 +41,73 @@ const CourseCards = ({ name, universityName }) => {
 
 const CourseMain = () => {
   const { universityname } = useParams();
-
-  const universitySlug = universityname;
-  const [visibleCourses, setVisibleCourses] = useState(9); // Initially show 9 courses
+  const [visibleCourses, setVisibleCourses] = useState(9);
   const [courses, setCourses] = useState([]);
+  const [allCourses, setAllCourses] = useState([]);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch the university based on the slug
-    const universityName = decodeURIComponent(universitySlug.replace(/-/g, " "));
-    const university = mbbsCollegeList.find(
-      (college) => college.universityName.toLowerCase() === universityName.toLowerCase()
-    );
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const universityName = decodeURIComponent(universityname.replace(/-/g, " "));
+        setSelectedUniversity({ universityName });
+        
+        const coursesData = await getCoursesForUniversity(universityName);
+        setAllCourses(coursesData);
+        setCourses(coursesData.slice(0, visibleCourses));
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (university) {
-      setSelectedUniversity(university); // Set the selected university
-      setCourses(university.course.slice(0, visibleCourses)); // Show its courses
-    }
-  }, [universitySlug, visibleCourses]);
+    fetchCourses();
+  }, [universityname, visibleCourses]);
 
   const loadMoreCourses = () => {
-    if (selectedUniversity) {
-      const newVisibleCount = visibleCourses + 9; // Increase the visible courses count
-      setVisibleCourses(newVisibleCount);
-      setCourses(selectedUniversity.course.slice(0, newVisibleCount)); // Load more courses
-    }
+    const newVisibleCount = visibleCourses + 9;
+    setVisibleCourses(newVisibleCount);
+    setCourses(allCourses.slice(0, newVisibleCount));
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <SpinnerLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white h-full md:mb-20 mb-5">
       <div className="">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 py-8 bg-white">
-          {courses.map((course, index) => (
-            <CourseCards key={index} name={course} universityName={selectedUniversity?.universityName} />
-          ))}
-        </div>
-        {courses.length < selectedUniversity?.course.length && (
-          <div className="flex justify-center my-8">
-            <button
-              className="bg-pink-500 text-white px-6 py-2 rounded-lg shadow hover:bg-pink-600 focus:outline-none"
-              onClick={loadMoreCourses}
-            >
-              Load More
-            </button>
+        {courses.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 py-8 bg-white">
+              {courses.map((course, index) => (
+                <CourseCards key={index} name={course} universityName={selectedUniversity?.universityName} />
+              ))}
+            </div>
+            {courses.length < allCourses.length && (
+              <div className="flex justify-center my-8">
+                <button
+                  className="bg-pink-500 text-white px-6 py-2 rounded-lg shadow hover:bg-pink-600 focus:outline-none"
+                  onClick={loadMoreCourses}
+                >
+                  Load More
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="flex justify-center items-center min-h-96">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No Courses Available</h3>
+              <p className="text-gray-500">No courses found for this university.</p>
+            </div>
           </div>
         )}
       </div>

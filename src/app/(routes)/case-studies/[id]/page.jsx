@@ -4,9 +4,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Aside from "@/components/AdSection/Aside";
-import BottomAdSection from "@/components/AdSection/BottomAdSection";
-import TopAdSection from "@/components/AdSection/TopAdSection";
+// import Aside from "@/components/AdSection/Aside";
+// import BottomAdSection from "@/components/AdSection/BottomAdSection";
+// import TopAdSection from "@/components/AdSection/TopAdSection";
 import LineLoader from "@/components/common/Loader";
 import caseStudyDumyData from "@/lib/caseStudyDumyData.js";
 
@@ -49,8 +49,8 @@ export default function CaseStudyDetail({ params }) {
 
   return (
     <>
-      <Aside />
-      <TopAdSection />
+      {/* <Aside /> */}
+      {/* <TopAdSection /> */}
       <div className="main">
         <div className="max-w-4xl mx-auto px-6 py-8">
           {/* Back button */}
@@ -177,7 +177,7 @@ export default function CaseStudyDetail({ params }) {
           </div>
         </div>
       </div>
-      <BottomAdSection />
+      {/* <BottomAdSection /> */}
     </>
   );
 }

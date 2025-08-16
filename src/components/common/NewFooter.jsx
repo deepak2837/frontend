@@ -65,6 +65,14 @@ export default function ModernFooter() {
             </a>
             <span className="hidden sm:inline">|</span>
             <a
+              href="/career"
+              className="text-blue-200 underline hover:text-white transition-colors"
+              aria-label="career"
+            >
+              Careers
+            </a>
+            <span className="hidden sm:inline">|</span>
+            <a
               href="/disclaimer"
               className="text-blue-200 underline hover:text-white transition-colors"
               aria-label="Disclaimer"
