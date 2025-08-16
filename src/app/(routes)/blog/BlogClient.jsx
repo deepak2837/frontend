@@ -51,7 +51,7 @@ export default function BlogClient({ initialData, subjectOptions, difficultyOpti
 
   // Reset to page 1 when filters/search change
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(11);
   }, [filters, searchQuery, sortBy]);
 
   // Handle filter change
