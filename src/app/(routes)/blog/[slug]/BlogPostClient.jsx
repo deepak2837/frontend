@@ -11,6 +11,21 @@ export default function BlogPostClient({ blog }) {
   // Use the blog engagement hook
   const { isLiked, likeCount, isLoading: likeLoading, toggleLike, updateLikeCount, trackBlogView } = useBlogEngagement(blog?._id);
 
+  // Image helper function - same as Cards.jsx
+  const getImageUrl = (imageUrl, postId) => {
+    // First, try to serve from local blog-images folder using post ID
+    if (postId) {
+      const localImagePath = `/blog-images/${postId}.jpg`;
+      return localImagePath;
+    }
+    
+    // Fallback to original logic for S3 URLs or other cases
+    if (!imageUrl || imageUrl === "no_image" || !imageUrl.startsWith("http")) {
+      return "/default-blog.jpg";
+    }
+    return imageUrl;
+  };
+
   // Carousel state for related posts
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
@@ -182,14 +197,19 @@ export default function BlogPostClient({ blog }) {
           {blog?.coverImage && blog.coverImage !== "no_image" && (
             <div className="mb-8 relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[21/9] xl:aspect-[25/9] w-full">
               <Image
-                src={blog.coverImage}
+                src={getImageUrl(blog.coverImage, blog._id || blog.id)}
                 alt={blog.seo?.metaTitle || blog.title}
                 fill
                 className="object-cover rounded-lg"
-                
-                
+                quality={50}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 800px"
+                onError={(e) => {
+                  // If local image fails to load, fallback to default
+                  e.target.src = "/default-blog.jpg";
+                }}
               />
             </div>
           )}
@@ -344,11 +364,18 @@ export default function BlogPostClient({ blog }) {
                             {/* Cover Image */}
                             <div className="relative h-32 overflow-hidden">
                               <Image
-                                src={relatedPost.coverImage =="no_image" ? '/placeholder-blog.jpg':relatedPost.coverImage}
+                                src={getImageUrl(relatedPost.coverImage, relatedPost._id || relatedPost.id)}
                                 alt={relatedPost.title}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                quality={10}
+                                placeholder="blur"
+                                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                                onError={(e) => {
+                                  // If local image fails to load, fallback to default
+                                  e.target.src = "/default-blog.jpg";
+                                }}
                               />
                               {/* View count badge */}
                               <div className="absolute top-1 right-1 bg-black bg-opacity-70 text-white text-xs px-1.5 py-0.5 rounded-full">

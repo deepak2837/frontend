@@ -12,10 +12,9 @@
   }
 
   
-  
-
 
   
+
   .searchContainer {
     position: relative;
     width: 100%;
@@ -27,7 +26,15 @@
   
   .bgWhite {
     background-color: white;
-    margin-bottom: 20;
+    margin-bottom: 20px;
+  }
+
+  /* Desktop margins for ad space */
+  @media (min-width: 1024px) {
+    .bgWhite {
+      margin-left: 200px;
+      margin-right: 200px;
+    }
   }
   
   /* Media query for small screens */

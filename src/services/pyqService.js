@@ -70,7 +70,7 @@ export const getPYQPapers = async (filters = {}) => {
       }
     });
 
-    const response = await fetch(`${BASE_URL}/api/v1/pyq?${queryParams}`);
+    const response = await fetch(`${BASE_URL}/api/v1/pyq/?${queryParams}`);
     if (!response.ok) {
       throw new Error('Failed to fetch PYQ papers');
     }
@@ -85,7 +85,7 @@ export const getPYQPapers = async (filters = {}) => {
 // Get PYQ paper by ID
 export const getPYQPaperById = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/pyq/${id}`);
+    const response = await fetch(`${BASE_URL}/api/v1/pyq/by-id/${id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch PYQ paper');
     }
@@ -95,4 +95,25 @@ export const getPYQPaperById = async (id) => {
     console.error('Error fetching PYQ paper:', error);
     return null;
   }
-}; 
+};
+
+// Get a single PYQ by university, course, subject, year
+export const getPYQPaperByDetails = async ({ universityName, courseName, subject, year }) => {
+  try {
+    const params = new URLSearchParams({
+      universityName,
+      courseName,
+      subject,
+      year
+    });
+    const response = await fetch(`${BASE_URL}/api/v1/pyq/by-details?${params}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch PYQ paper');
+    }
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error fetching PYQ paper by details:', error);
+    return null;
+  }
+};

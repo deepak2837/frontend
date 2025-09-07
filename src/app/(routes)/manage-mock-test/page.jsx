@@ -140,6 +140,11 @@ export default function ManageMockTests() {
     fetchTests();
   }, []);
 
+  // Add effect to handle filtering when search text or filters change
+  useEffect(() => {
+    applyFilters();
+  }, [searchText, filters, allTests]);
+
   const fetchTests = async () => {
     setLoading(true);
     try {
@@ -160,6 +165,32 @@ export default function ManageMockTests() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyFilters = () => {
+    let filtered = [...allTests];
+
+    // Apply search filter
+    if (searchText.trim()) {
+      filtered = filtered.filter(test => 
+        test.title?.toLowerCase().includes(searchText.toLowerCase()) ||
+        test.testName?.toLowerCase().includes(searchText.toLowerCase()) ||
+        test.description?.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    // Apply status filter
+    if (filters.status !== "all") {
+      filtered = filtered.filter(test => test.status === filters.status);
+    }
+
+    // Apply test type filter
+    if (filters.testType !== "all") {
+      filtered = filtered.filter(test => test.testType === filters.testType);
+    }
+
+    setFilteredTests(filtered);
+    setTotal(filtered.length);
   };
 
   const handleDelete = async (testId) => {

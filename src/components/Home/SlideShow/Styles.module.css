@@ -21,6 +21,10 @@
     margin-top: 50px;
     max-height: 500px;
     border-radius: 30px;
+    /* Desktop: width 70%, centered */
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
   }
   
   .slide.active {
@@ -34,7 +38,7 @@
       /* border:10px solid red; */
       margin-top: 0px !important;
       height:290px !important;
-      /* width:140% !important; */
+      /* width:70% !important; */
       margin-left: 2%!important;
       margin-right: 2%!important;
 
@@ -42,5 +46,8 @@
     }
   .slide > img {
     height: 300px;
+    width: 100%;        /* Full width for mobile */
+    margin-left: 0;
+    margin-right: 0;
   }
   }

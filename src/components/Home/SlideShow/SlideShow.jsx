@@ -31,10 +31,11 @@ const SlideShow = ({ imageLinks }) => {
           style={slideStyle}
         >
           <Image  
-          width={1000}
-          height={1000}
-          src={imageLink} alt={`Slide ${index + 1}`} style={{ width: "100%" ,
-          }}  /> 
+            width={1000}
+            height={1000}
+            src={imageLink}
+            alt={`Slide ${index + 1}`}
+          />
         </div>
       ))}
     </div>

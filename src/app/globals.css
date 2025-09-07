@@ -16,8 +16,8 @@
 
 @media (min-width: 1024px) {
   .main {
-    margin-left: 260px !important;
-    margin-right: 260px !important;
+    margin-left: 10px !important;  /* 160px ad + 10px gap */
+    margin-right: 10px !important;
   }
 }
 

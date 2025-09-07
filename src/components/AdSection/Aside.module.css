@@ -40,10 +40,3 @@
       display: none; /* Completely hide the aside container */
     }
   }
-  
-  /* Add spacing for content between ads */
-@media (min-width: 769px) {
-  .asideContainer + * {
-    margin: 0 250px;
-  }
-}

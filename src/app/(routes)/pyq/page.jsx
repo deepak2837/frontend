@@ -17,7 +17,7 @@ const Pyq = () => {
         
         </div> */}
 
-        <div className=" lg:pt-5">
+        <div className="lg:pt-5 lg:mx-[200px]">
           {/* <Filters /> */}
           <MainContent />
         </div>
