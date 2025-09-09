@@ -1,14 +1,13 @@
-
 // File: app/case-studies/[id]/page.jsx (Detail page)
 "use client"
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-// import Aside from "@/components/AdSection/Aside";
-// import BottomAdSection from "@/components/AdSection/BottomAdSection";
-// import TopAdSection from "@/components/AdSection/TopAdSection";
+import Aside from "@/components/AdSection/Aside";
+import BottomAdSection from "@/components/AdSection/BottomAdSection";
+import TopAdSection from "@/components/AdSection/TopAdSection";
 import LineLoader from "@/components/common/Loader";
-import caseStudyDumyData from "@/lib/caseStudyDumyData.js";
+import realCaseStudyData from "@/lib/realCaseStudyData.js";
 
 export default function CaseStudyDetail({ params }) {
   const [loading, setLoading] = useState(true);
@@ -20,8 +19,8 @@ export default function CaseStudyDetail({ params }) {
     // Simulate data loading
     setLoading(true);
     
-    // Find the case study by ID
-    const study = caseStudyDumyData.find(item => item.id.toString() === id);
+    // Find the case study by id
+    const study = realCaseStudyData.find(item => item.id.toString() === id);
     
     if (study) {
       setCaseStudy(study);
@@ -39,6 +38,10 @@ export default function CaseStudyDetail({ params }) {
     router.back();
   };
 
+  const handleCardClick = (studyId) => {
+    router.push(`/case-studies/${studyId}`);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -49,8 +52,8 @@ export default function CaseStudyDetail({ params }) {
 
   return (
     <>
-      {/* <Aside /> */}
-      {/* <TopAdSection /> */}
+      <Aside />
+      <TopAdSection />
       <div className="main">
         <div className="max-w-4xl mx-auto px-6 py-8">
           {/* Back button */}
@@ -74,21 +77,24 @@ export default function CaseStudyDetail({ params }) {
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{caseStudy.title}</h1>
             <div className="flex items-center text-gray-600 text-sm mb-6">
               <span className="mr-6">Published: {caseStudy.date}</span>
+              {caseStudy.author && <span className="mr-6">Author: {caseStudy.author}</span>}
               {caseStudy.subject && <span className="mr-6">Subject: {caseStudy.subject}</span>}
               {caseStudy.disease && <span>Disease: {caseStudy.disease}</span>}
             </div>
           </div>
 
           {/* Featured image */}
-          <div className="mb-8 rounded-lg overflow-hidden h-64 md:h-96 relative">
-            <Image 
-              src={caseStudy.image} 
-              alt={caseStudy.title}
-              layout="fill"
-              objectFit="cover"
-              className="w-full"
-            />
-          </div>
+          {caseStudy.featured_image && caseStudy.featured_image !== "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" && (
+            <div className="mb-8 rounded-lg overflow-hidden h-64 md:h-96 relative">
+              <Image 
+                src={caseStudy.featured_image} 
+                alt={caseStudy.title}
+                layout="fill"
+                objectFit="cover"
+                className="w-full"
+              />
+            </div>
+          )}
 
           {/* Content */}
           <div className="prose prose-lg max-w-none">
@@ -98,49 +104,12 @@ export default function CaseStudyDetail({ params }) {
               <p className="text-gray-800">{caseStudy.description}</p>
             </div>
 
-            {/* Full content */}
-            <div className="space-y-6 quill-content">
-              {caseStudy.fullContent ? (
-                <div dangerouslySetInnerHTML={{ __html: caseStudy.fullContent }} />
-              ) : (
-                <>
-                  <h2>Background</h2>
-                  <p>
-                    {caseStudy.background || 
-                      "This is where detailed background information about the case would be presented. This section typically covers the initial patient presentation, medical history, and context leading up to the case."}
-                  </p>
-                  
-                  <h2>Methods and Approach</h2>
-                  <p>
-                    {caseStudy.methods || 
-                      "This section details the diagnostic methods, tests performed, and treatment approaches considered. It provides insight into the clinical decision-making process and the rationale behind chosen interventions."}
-                  </p>
-                  
-                  <h2>Results</h2>
-                  <p>
-                    {caseStudy.results || 
-                      "The results section presents outcomes of the interventions, patient response to treatment, and any complications or unexpected developments. Data, charts, or images might be included here to illustrate key findings."}
-                  </p>
-                  
-                  <h2>Conclusion</h2>
-                  <p>
-                    {caseStudy.conclusion || 
-                      "The conclusion summarizes the key learnings from this case, implications for clinical practice, and recommendations for similar cases in the future. It might also suggest areas for further research or investigation."}
-                  </p>
-                </>
-              )}
-            </div>
-
-            {/* References section */}
-            {caseStudy.references && (
-              <div className="mt-12 pt-6 border-t border-gray-200">
-                <h2 className="text-xl font-semibold mb-4">References</h2>
-                <ul className="list-decimal pl-5 space-y-2">
-                  {caseStudy.references.map((ref, index) => (
-                    <li key={index} className="text-sm text-gray-700">{ref}</li>
-                  ))}
-                </ul>
-              </div>
+            {/* Full content with original HTML structure */}
+            {caseStudy.fullContent && (
+              <div 
+                className="case-study-content"
+                dangerouslySetInnerHTML={{ __html: caseStudy.fullContent }}
+              />
             )}
           </div>
 
@@ -148,7 +117,7 @@ export default function CaseStudyDetail({ params }) {
           <div className="mt-12 pt-8 border-t border-gray-200">
             <h2 className="text-2xl font-bold mb-6">Related Case Studies</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {caseStudyDumyData
+              {realCaseStudyData
                 .filter(study => study.id !== caseStudy.id && 
                   (study.subject === caseStudy.subject || study.disease === caseStudy.disease))
                 .slice(0, 2)
@@ -160,7 +129,7 @@ export default function CaseStudyDetail({ params }) {
                   >
                     <div className="h-40 relative">
                       <Image 
-                        src={study.image} 
+                        src={study.featured_image || study.image} 
                         alt={study.title}
                         layout="fill"
                         objectFit="cover"
@@ -177,7 +146,7 @@ export default function CaseStudyDetail({ params }) {
           </div>
         </div>
       </div>
-      {/* <BottomAdSection /> */}
+      <BottomAdSection />
     </>
   );
 }

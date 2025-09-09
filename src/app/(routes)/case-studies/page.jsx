@@ -1,12 +1,12 @@
 "use client"
 import { useState } from "react";
 import { useRouter } from "next/navigation"
-// import Aside from "@/components/AdSection/Aside";
-// import BottomAdSection from "@/components/AdSection/BottomAdSection";
-// import TopAdSection from "@/components/AdSection/TopAdSection";
+import Aside from "@/components/AdSection/Aside";
+import BottomAdSection from "@/components/AdSection/BottomAdSection";
+import TopAdSection from "@/components/AdSection/TopAdSection";
 import CaseStudyCard from "@/components/CaseStudy/CaseStudyCard";
 import LineLoader from "@/components/common/Loader";
-import caseStudyDumyData from "@/lib/caseStudyDumyData.js"
+import realCaseStudyData from "@/lib/realCaseStudyData.js"
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -15,11 +15,11 @@ export default function Page() {
   const router = useRouter();
   
   // Extract unique subjects and diseases from the data
-  const subjects = [...new Set(caseStudyDumyData.map(card => card.subject || "Uncategorized"))];
-  const diseases = [...new Set(caseStudyDumyData.map(card => card.disease || "Uncategorized"))];
+  const subjects = [...new Set(realCaseStudyData.map(card => card.subject || "Uncategorized"))];
+  const diseases = [...new Set(realCaseStudyData.map(card => card.disease || "Uncategorized"))];
   
   // Filter case studies based on selected filters
-  const filteredCaseStudies = caseStudyDumyData.filter(card => {
+  const filteredCaseStudies = realCaseStudyData.filter(card => {
     const matchesSubject = subjectFilter === "all" || card.subject === subjectFilter;
     const matchesDisease = diseaseFilter === "all" || card.disease === diseaseFilter;
     return matchesSubject && matchesDisease;
@@ -33,10 +33,11 @@ export default function Page() {
     setDiseaseFilter(e.target.value);
   };
   
-   // Navigate to case study detail page
+   // Navigate to case study detail page using id
    const handleCardClick = (id) => {
     router.push(`/case-studies/${id}`);
   };
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -47,12 +48,12 @@ export default function Page() {
   
   return (
     <>
-      {/* <Aside /> */}
-      {/* <TopAdSection /> */}
+      <Aside />
+      <TopAdSection />
       <div className="main">
         <div className="md:mt-10">
           {/* Filter section */}
-          <div className="flex flex-col md:flex-row gap-4 px-6 py-0 items-start md:items-center">
+          <div className="flex flex-col md:flex-row gap-4 px-6 py-0 items-start md:items-center max-w-7xl mx-auto">
             <div className="w-full md:w-auto">
               <label htmlFor="subject-filter" className="block text-sm font-medium text-gray-700 mb-1">
                 Filter by Subject:
@@ -89,19 +90,19 @@ export default function Page() {
           </div>
           
           {/* Results count */}
-          <div className="p-6 pt-3 pb-0">
+          <div className="p-6 pt-3 pb-0 max-w-7xl mx-auto">
             <p className="text-sm text-gray-600">
-              Showing {filteredCaseStudies.length} of {caseStudyDumyData.length} case studies
+              Showing {filteredCaseStudies.length} of {realCaseStudyData.length} case studies
             </p>
           </div>
           
           {/* Case studies grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6 max-w-7xl mx-auto">
             {filteredCaseStudies.length > 0 ? (
               filteredCaseStudies.map(card => (
                 <div key={card.id} onClick={() => handleCardClick(card.id)} className="cursor-pointer transition-all hover:shadow-lg">
                   <CaseStudyCard
-                    image={card.image}
+                    image={card.featured_image || card.image}
                     title={card.title}
                     date={card.date}
                     description={card.description}
@@ -121,7 +122,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <BottomAdSection /> */}
+      <BottomAdSection />
     </>
   );
 }
