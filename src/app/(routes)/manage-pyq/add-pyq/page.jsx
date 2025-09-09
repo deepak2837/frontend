@@ -23,6 +23,8 @@ import {
   ArrowBack as ArrowBackIcon,
 } from "@mui/icons-material";
 import useAuthStore from "@/store/authStore";
+import Autocomplete from "@mui/material/Autocomplete";
+import universityNames from "@/lib/university_names";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -35,24 +37,45 @@ const MONTHS_SESSIONS = [
   "Winter Session", "Summer Session", "Spring Session", "Fall Session"
 ];
 
+// Static course and subject lists
+const COURSES = [
+  "MBBS", "MD", "MS", "BDS", "BPT", "BSc Nursing", "MSc Nursing", "DM", "MCh", "DNB", "Other"
+];
+
+const MBBS_SUBJECTS = [
+  "Anatomy", "Physiology", "Biochemistry", "Pathology", "Pharmacology", "Microbiology",
+  "Forensic Medicine", "Community Medicine", "Ophthalmology", "ENT", "Medicine", "Surgery",
+  "Obstetrics and Gynaecology", "Paediatrics", "Orthopaedics", "Dermatology", "Psychiatry",
+  "Anaesthesiology", "Radiology", "Other"
+];
+
+const OTHER_SUBJECTS = [
+  "General Medicine", "General Surgery", "Paediatrics", "Obstetrics and Gynaecology",
+  "Orthopaedics", "Anaesthesiology", "Radiology", "Dermatology", "Psychiatry", "Other"
+];
+
+const PAPER_SOURCES = [
+  "First Ranker",
+  "Telegram",
+  "Internet",
+  "Private Groups",
+  "Official University Website",
+  "Other"
+];
+
 export default function AddPYQ() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const { getToken } = useAuthStore();
-  const [dynamicFilters, setDynamicFilters] = useState({
-    universities: [],
-    courses: ["mbbs"],
-    subjects: ["Anatomy"],
-  });
   const [formData, setFormData] = useState({
     universityName: "",
     country: "India",
     examName: "",
     year: new Date().getFullYear(),
-    monthSession: "",
-    courseName: "",
+    monthSession: "Spring Session",
+    courseName: "MBBS",
     subject: "",
     paperCode: "",
     examDuration: "",
@@ -61,29 +84,6 @@ export default function AddPYQ() {
     paperType: "pdf",
     status: "active"
   });
-
-  // Fetch dropdown values
-  const fetchDropdownValues = async () => {
-    try {
-      const token = getToken();
-      if (!token) return;
-
-      const response = await fetch(`${BASE_URL}/api/v1/pyq/dropdowns`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setDynamicFilters(data.data);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching dropdown values:", error);
-    }
-  };
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -203,8 +203,11 @@ export default function AddPYQ() {
   };
 
   useEffect(() => {
-    fetchDropdownValues();
+    // No need to fetch dropdown values from API
   }, [getToken]);
+
+  // Subject options based on course
+  const subjectOptions = formData.courseName === "MBBS" ? MBBS_SUBJECTS : OTHER_SUBJECTS;
 
   return (
     <Box sx={{ p: 3 }}>
@@ -223,38 +226,24 @@ export default function AddPYQ() {
       <Paper sx={{ p: 3 }}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* University Name */}
+            {/* University Name (Searchable) */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>University / Institution Name *</InputLabel>
-                <Select
-                  name="universityName"
-                  value={formData.universityName}
-                  label="University / Institution Name *"
-                  onChange={handleInputChange}
-                  required
-                >
-                  {dynamicFilters.universities?.map((university) => (
-                    <MenuItem key={university} value={university}>
-                      {university}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                Or type a new university name below
-              </Typography>
-              <TextField
-                fullWidth
-                label="New University Name (if not in list)"
-                variant="outlined"
-                sx={{ mt: 1 }}
-                onChange={(e) => setFormData(prev => ({ ...prev, universityName: e.target.value }))}
+              <Autocomplete
+                freeSolo
+                options={universityNames}
                 value={formData.universityName}
+                onChange={(_, value) => setFormData(prev => ({ ...prev, universityName: value || "" }))}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="University / Institution Name *"
+                    required
+                  />
+                )}
               />
             </Grid>
 
-            {/* Country */}
+            {/* Country (default India) */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Country *</InputLabel>
@@ -325,7 +314,7 @@ export default function AddPYQ() {
               </FormControl>
             </Grid>
 
-            {/* Course Name */}
+            {/* Course Name (Static) */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Course Name *</InputLabel>
@@ -335,7 +324,7 @@ export default function AddPYQ() {
                   label="Course Name *"
                   onChange={handleInputChange}
                 >
-                  {dynamicFilters.courses?.map((course) => (
+                  {COURSES.map((course) => (
                     <MenuItem key={course} value={course}>
                       {course}
                     </MenuItem>
@@ -344,7 +333,7 @@ export default function AddPYQ() {
               </FormControl>
             </Grid>
 
-            {/* Subject */}
+            {/* Subject (Static, changes with course) */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Subject *</InputLabel>
@@ -354,7 +343,7 @@ export default function AddPYQ() {
                   label="Subject *"
                   onChange={handleInputChange}
                 >
-                  {dynamicFilters.subjects?.map((subject) => (
+                  {subjectOptions.map((subject) => (
                     <MenuItem key={subject} value={subject}>
                       {subject}
                     </MenuItem>
@@ -402,14 +391,21 @@ export default function AddPYQ() {
 
             {/* Paper Source */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Paper Source"
-                name="paperSource"
-                value={formData.paperSource}
-                onChange={handleInputChange}
-                placeholder="e.g., Official University Website"
-              />
+              <FormControl fullWidth>
+                <InputLabel>Paper Source</InputLabel>
+                <Select
+                  name="paperSource"
+                  value={formData.paperSource}
+                  label="Paper Source"
+                  onChange={handleInputChange}
+                >
+                  {PAPER_SOURCES.map((source) => (
+                    <MenuItem key={source} value={source}>
+                      {source}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
 
             {/* Paper Type */}
@@ -503,4 +499,4 @@ export default function AddPYQ() {
       </Paper>
     </Box>
   );
-} 
+}

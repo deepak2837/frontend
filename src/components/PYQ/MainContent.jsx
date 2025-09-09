@@ -126,8 +126,8 @@ const MainContent = () => {
             ) : (
               <div className="flex justify-center items-center min-h-96">
                 <div className="text-center">
-                  <h3 className="text-xl font-semibold text-gray-600 mb-2">No PYQ Papers Available</h3>
-                  <p className="text-gray-500">No previous year question papers have been uploaded yet.</p>
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">Our medicos are uploading day and night</h3>
+                  <p className="text-gray-500">Please allow us some time</p>
                 </div>
               </div>
             )}

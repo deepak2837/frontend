@@ -74,7 +74,7 @@ const SubjectMain = () => {
   }
 
   return (
-    <div className="bg-white h-full md:mb-20 mb-5">
+    <div className="bg-white h-full md:mb-20 mb-5 lg:mx-[200px]">
       <div className="">
         {subjects.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 py-8 bg-white">

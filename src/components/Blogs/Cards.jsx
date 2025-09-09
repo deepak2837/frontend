@@ -4,7 +4,16 @@ import Link from "next/link";
 const BlogCard = ({ post }) => {
   const defaultImage = "/default-blog.jpg";
 
-  const getImageUrl = (imageUrl) => {
+  const getImageUrl = (imageUrl, postId) => {
+    // First, try to serve from local blog-images folder using post ID
+    if (postId) {
+      const localImagePath = `/blog-images/${postId}`+".jpg";
+      // Note: We'll assume the image exists and let Next.js handle 404s
+      // You could add additional checks here if needed
+      return localImagePath;
+    }
+    
+    // Fallback to original logic for S3 URLs or other cases
     if (!imageUrl || imageUrl === "no_image" || !imageUrl.startsWith("http")) {
       return defaultImage;
     }
@@ -19,12 +28,19 @@ const BlogCard = ({ post }) => {
       {/* Image with glass overlay */}
       <div className="relative w-full h-32 sm:h-28 overflow-hidden">
         <Image
-          src={getImageUrl(post.coverImage)}
+          src={getImageUrl(post.coverImage, post._id || post.id)}
           alt={post.title || "Blog post"}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           priority={false}
+          quality={50}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+          onError={(e) => {
+            // If local image fails to load, fallback to default
+            e.target.src = defaultImage;
+          }}
         />
         {/* Glass overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent z-10" />

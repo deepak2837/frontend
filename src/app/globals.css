@@ -16,8 +16,8 @@
 
 @media (min-width: 1024px) {
   .main {
-    margin-left: 260px !important;
-    margin-right: 260px !important;
+    margin-left: 10px !important;  /* 160px ad + 10px gap */
+    margin-right: 10px !important;
   }
 }
 
@@ -145,3 +145,98 @@ body::-webkit-scrollbar {
   z-index: 50;
 }
 
+
+/* Case Study Content Styles */
+.case-study-content {
+  @apply text-gray-800 leading-relaxed;
+}
+
+.case-study-content h1,
+.case-study-content h2,
+.case-study-content h3,
+.case-study-content h4,
+.case-study-content h5,
+.case-study-content h6 {
+  @apply font-bold text-gray-900 mt-6 mb-3;
+}
+
+.case-study-content h1 {
+  @apply text-2xl;
+}
+
+.case-study-content h2 {
+  @apply text-xl;
+}
+
+.case-study-content h3 {
+  @apply text-lg;
+}
+
+.case-study-content p {
+  @apply mb-4;
+}
+
+.case-study-content ul,
+.case-study-content ol {
+  @apply mb-4 pl-6;
+}
+
+.case-study-content li {
+  @apply mb-2;
+}
+
+.case-study-content blockquote {
+  @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 my-4;
+}
+
+.case-study-content img {
+  @apply max-w-full h-auto rounded-lg shadow-md my-4;
+}
+
+.case-study-content figure {
+  @apply my-6;
+}
+
+.case-study-content figure img {
+  @apply w-full;
+}
+
+.case-study-content hr {
+  @apply my-8 border-gray-300;
+}
+
+.case-study-content strong {
+  @apply font-semibold;
+}
+
+.case-study-content mark {
+  @apply bg-yellow-200 px-1 rounded;
+}
+
+.case-study-content a {
+  @apply text-blue-600 hover:text-blue-800 underline;
+}
+
+.case-study-content .wp-block-quote {
+  @apply border-l-4 border-purple-500 pl-4 italic text-gray-700 my-4;
+}
+
+.case-study-content .wp-block-list {
+  @apply list-disc pl-6 mb-4;
+}
+
+.case-study-content .wp-block-separator {
+  @apply my-8 border-gray-300;
+}
+
+.case-study-content .et_social_inline {
+  @apply my-6;
+}
+
+.case-study-content .et_bloom_below_post {
+  @apply my-6;
+}
+
+.case-study-content .comment-respond {
+  @apply my-6;
+}

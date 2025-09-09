@@ -358,28 +358,28 @@ const CareerPageClient = () => {
     setIsSubmitting(true);
     
     try {
-      // const formDataToSend = new FormData();
-      // formDataToSend.append('name', formData.name);
-      // formDataToSend.append('email', formData.email);
-      // formDataToSend.append('phone', formData.phone);
-      // formDataToSend.append('resume', formData.resume);
-      // formDataToSend.append('position', selectedJob.title);
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('resume', formData.resume);
+      formDataToSend.append('position', selectedJob.title);
 
-      // const response = await fetch('/api/career/apply', {
-      //   method: 'POST',
-      //   body: formDataToSend,
-      // });
+      const response = await fetch('/api/career/apply', {
+        method: 'POST',
+        body: formDataToSend,
+      });
 
-      // const responseData = await response.json();
+      const responseData = await response.json();
       // console.log('Response status:', response.status);
       // console.log('Response data:', responseData);
 
-   if (true) {
+   if (responseData.success) {
     // console.log('Application submitted successfully:', responseData);
-    //   toast.success('Application submitted successfully! 🎉');
-    //   setFormData({ name: '', email: '', phone: '', resume: null });
-    //   setErrors({ name: '', email: '', phone: '' });
-    //   setSubmittedJob(selectedJob);
+      toast.success('Application submitted successfully! 🎉');
+      setFormData({ name: '', email: '', phone: '', resume: null });
+      setErrors({ name: '', email: '', phone: '' });
+      setSubmittedJob(selectedJob);
       setShowSuccessModal(true); // Open modal immediately after setting submittedJob
     } else {
       let errorMessage = 'Failed to submit application';

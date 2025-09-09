@@ -7,6 +7,9 @@ import SecurityWrapper from "@/components/screenshot/SecurityWrapper";
 import AuthInitializer from "@/components/common/AuthInitializer";
 import AdsterraAd from "@/components/AdSection/AdsterraAd";
 import Script from "next/script";
+import Aside from "@/components/AdSection/Aside";
+import DesktopAsideAds from "@/components/AdSection/DesktopAsideAds";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -76,16 +79,49 @@ export default function RootLayout({ children, Component, pageProps }) {
           <SecurityWrapper />
           <AuthInitializer />
           <Header />
-             <AdsterraAd />
+          {/* <AdsterraAd /> */}
+          <DesktopAsideAds />
           {/* <Aside/> */}
           {/* Remove TopAdSection and BottomAdSection references */}
-          <main className="flex-1 bg-white z-10 w-full">
-            {children}
-          </main>
-          
+          <div className="main flex-1 bg-white z-10 w-full">
+            <main>
+              {children}
+            </main>
+          </div>
+          {/* Mobile bottom ad: only show on mobile, after children, before footer */}
+          {/* <div
+            id="mobile-ad-bottom"
+            style={{
+              width: "100%",
+              minHeight: "100px",
+              background: "#f0f0f0",
+              border: "1px solid #ccc",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "12px 0",
+              zIndex: 30,
+            }}
+          >
+            <Script type="text/javascript" id="mobile-ad-bottom-options" strategy="afterInteractive">
+              {`
+                atOptions = {
+                  'key' : '6f3b82a50edc590c32222299e704b9c7',
+                  'format' : 'iframe',
+                  'height' : 90,
+                  'width' : 728,
+                  'params' : {}
+                };
+              `}
+            </Script>
+            <Script
+              id="mobile-ad-bottom-script"
+              type="text/javascript"
+              strategy="afterInteractive"
+              src="//www.highperformanceformat.com/6f3b82a50edc590c32222299e704b9c7/invoke.js"
+            />
+          </div> */}
           {/* Adsterra Ad - positioned between main content and footer */}
-          <AdsterraAd />
-
           {/* <BottomAdSection/> */}
           <footer className="z-10 mt-auto w-full">
             <NewFooter />

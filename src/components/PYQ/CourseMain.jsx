@@ -82,7 +82,7 @@ const CourseMain = () => {
   }
 
   return (
-    <div className="bg-white h-full md:mb-20 mb-5">
+    <div className="bg-white h-full md:mb-20 mb-5 lg:mx-[200px]">
       <div className="">
         {courses.length > 0 ? (
           <>
@@ -106,7 +106,7 @@ const CourseMain = () => {
           <div className="flex justify-center items-center min-h-96">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-600 mb-2">No Courses Available</h3>
-              <p className="text-gray-500">No courses found for this university.</p>
+              <p className="text-gray-500">No courses found for this course.</p>
             </div>
           </div>
         )}
