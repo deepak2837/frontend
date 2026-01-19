@@ -24,7 +24,8 @@ const settings = [
 function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { isAuthenticated, user, logout, initializeAuth } = useAuthStore();
+  const { isAuthenticated, user, logout, initializeAuth, getUser } = useAuthStore();
+  const currentUser = getUser();
 
   // Validate auth state on component mount
   useEffect(() => {
@@ -36,6 +37,24 @@ function Header() {
       }
     }
   }, [isAuthenticated, initializeAuth, logout]);
+
+  // Dynamic settings based on admin status
+  const getUserSettings = () => {
+    const baseSettings = [
+      { label: "Profile", link: "/profile" },
+      { label: "My Records", link: "/records" },
+    ];
+
+    // Add Manage option for admins
+    if (currentUser?.role === 'admin') {
+      baseSettings.splice(1, 0, { label: "Manage", link: "/manage" });
+    }
+
+    baseSettings.push({ label: "Logout", link: "/" });
+    return baseSettings;
+  };
+
+  const userSettings = getUserSettings();
 
   const toggleNavMenu = () => setIsNavOpen((prev) => !prev);
   const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
@@ -88,7 +107,7 @@ function Header() {
                 </button>
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-10 w-48 bg-white rounded-lg shadow-lg z-10">
-                    {settings.map(({ label, link }) => (
+                    {userSettings.map(({ label, link }) => (
                       <Link
                         key={label}
                         href={link}
@@ -138,7 +157,7 @@ function Header() {
                 </button>
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-10 w-48 bg-white rounded-lg shadow-lg z-10">
-                    {settings.map(({ label, link }) => (
+                    {userSettings.map(({ label, link }) => (
                       <Link
                         key={label}
                         href={link}

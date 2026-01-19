@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function GET(request, { params }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("authToken")?.value;
 
   if (!token) {

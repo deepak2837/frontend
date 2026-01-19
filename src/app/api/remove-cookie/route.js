@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 export async function POST() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     
     // Clear the auth cookie with explicit options
     cookieStore.delete("auth_token", {

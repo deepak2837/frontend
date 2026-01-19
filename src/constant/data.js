@@ -55,11 +55,25 @@ export const ServicesData = [
     imgURL: images.services06,
   },
   {
+    titleone: "Study",
+    titletwo: "Notes",
+    link: "/notes",
+    itemclass: "blight",
+    imgURL: images.services05,
+  },
+  {
     titleone: "Videos",
     titletwo: "",
     link: "/videos",
-    itemclass: "blight",
+    itemclass: "bgreen",
     imgURL: images.services07,
+  },
+  {
+    titleone: "College/Rank",
+    titletwo: "Predictor",
+    link: "/predictors",
+    itemclass: "bdark",
+    imgURL: images.services01,
   },
 ];
 

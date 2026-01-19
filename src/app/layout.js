@@ -5,6 +5,7 @@ import NewFooter from "@/components/common/NewFooter";
 import ToastProvider from "@/components/Toast";
 import SecurityWrapper from "@/components/screenshot/SecurityWrapper";
 import AuthInitializer from "@/components/common/AuthInitializer";
+import { AdsProvider } from "@/contexts/AdsContext";
 import AdsterraAd from "@/components/AdSection/AdsterraAd";
 import Script from "next/script";
 import Aside from "@/components/AdSection/Aside";
@@ -76,18 +77,19 @@ export default function RootLayout({ children, Component, pageProps }) {
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         <div className="min-h-screen flex flex-col">
-          <SecurityWrapper />
-          <AuthInitializer />
-          <Header />
-          {/* <AdsterraAd /> */}
-          <DesktopAsideAds />
-          {/* <Aside/> */}
-          {/* Remove TopAdSection and BottomAdSection references */}
-          <div className="main flex-1 bg-white z-10 w-full">
-            <main>
-              {children}
-            </main>
-          </div>
+          <AdsProvider>
+            <SecurityWrapper />
+            <AuthInitializer />
+            <Header />
+            {/* <AdsterraAd /> */}
+            <DesktopAsideAds />
+            {/* <Aside/> */}
+            {/* Remove TopAdSection and BottomAdSection references */}
+            <div className="main flex-1 bg-white z-10 w-full">
+              <main>
+                {children}
+              </main>
+            </div>
           {/* Mobile bottom ad: only show on mobile, after children, before footer */}
           {/* <div
             id="mobile-ad-bottom"
@@ -126,6 +128,7 @@ export default function RootLayout({ children, Component, pageProps }) {
           <footer className="z-10 mt-auto w-full">
             <NewFooter />
           </footer>
+          </AdsProvider>
         </div>
         <ToastProvider />
       </body>

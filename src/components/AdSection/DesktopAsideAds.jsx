@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Script from "next/script";
 import { createPortal } from "react-dom";
+import { useAds } from "@/contexts/AdsContext";
 
 // Flag to show mobile ads on desktop when true
 const SHOW_MOBILE_ADS_ON_DESKTOP = true;
@@ -41,6 +42,7 @@ const adStyleMobileBottom = {
 };
 
 const DesktopAsideAds = () => {
+  const { canShowAds, loading } = useAds();
   const [screen, setScreen] = useState("desktop"); // "desktop" | "mobile" | "none"
   const [headerContainer, setHeaderContainer] = useState(null);
   const [footerContainer, setFooterContainer] = useState(null);
@@ -59,6 +61,7 @@ const DesktopAsideAds = () => {
 
   // Create portal containers for mobile ads
   useEffect(() => {
+    if (loading || !canShowAds()) return; // Don't create portals if ads shouldn't show
     if (screen === "mobile"   || screen === "tablet" || (screen === "desktop"  && SHOW_MOBILE_ADS_ON_DESKTOP)) {
       // Create container after header
       const headerAd = document.createElement("div");
@@ -85,11 +88,13 @@ const DesktopAsideAds = () => {
         setFooterContainer(null);
       };
     }
-  }, [screen]);
+  }, [screen, loading, canShowAds]);
 
   // Desktop ad script injection
   useEffect(() => {
     if (screen !== "desktop") return;
+    if (loading || !canShowAds()) return; // Don't inject scripts if ads shouldn't show
+    
     // Left ad
     const leftScript = document.createElement("script");
     leftScript.async = true;
@@ -112,7 +117,7 @@ const DesktopAsideAds = () => {
       leftDiv && (leftDiv.innerHTML = "");
       rightDiv && (rightDiv.innerHTML = "");
     };
-  }, [screen]);
+  }, [screen, loading, canShowAds]);
 
   // Mobile ads component
   const MobileAds = () => (
@@ -209,26 +214,33 @@ const DesktopAsideAds = () => {
     </>
   );
 
+  // Don't show ads if loading or if ads are disabled for this page
+  const shouldRenderAds = !loading && canShowAds();
+
   if (screen === "desktop") {
     return (
       <>
         {/* Desktop sidebar ads */}
-        <div style={{ ...adStyle, left: 10 }}>
-          <div id="container-dd5c7c3ddbb1a6f1c4b387dc122cfe65" style={{ width: "160px", height: "600px" }} />
-        </div>
-        <div style={{ ...adStyle, right: 10 }}>
-          <div id="container-adef7eea5d530e44cc4ad7f61c7f4b73" style={{ width: "160px", height: "600px" }} />
-        </div>
-        
-        {/* Show mobile ads on desktop if flag is enabled */}
-        {SHOW_MOBILE_ADS_ON_DESKTOP && <MobileAds />}
+        {shouldRenderAds && (
+          <>
+            <div style={{ ...adStyle, left: 10 }}>
+              <div id="container-dd5c7c3ddbb1a6f1c4b387dc122cfe65" style={{ width: "160px", height: "600px" }} />
+            </div>
+            <div style={{ ...adStyle, right: 10 }}>
+              <div id="container-adef7eea5d530e44cc4ad7f61c7f4b73" style={{ width: "160px", height: "600px" }} />
+            </div>
+            
+            {/* Show mobile ads on desktop if flag is enabled */}
+            {SHOW_MOBILE_ADS_ON_DESKTOP && <MobileAds />}
+          </>
+        )}
       </>
     );
   }
 
   if (screen === "mobile" || screen === "tablet") {
     console.log(screen);
-    return <MobileAds />;
+    return shouldRenderAds ? <MobileAds /> : null;
   }
 
   return null;

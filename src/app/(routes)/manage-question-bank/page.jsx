@@ -15,6 +15,7 @@ import {
   CheckCircle as CheckCircleIcon,
 } from "@mui/icons-material";
 import useAuthStore from "@/store/authStore";
+import { useAdminAuth } from "@/middleware/adminAuth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -35,16 +36,14 @@ export default function ManageQuestionBanks() {
   const [total, setTotal] = useState(0); // Add total count state
 
   const { getToken } = useAuthStore();
+  const { isAdmin } = useAdminAuth(); // Add admin auth check
 
   useEffect(() => {
     const storedToken = getToken();
-    console.log(storedToken);
-    if (!storedToken) {
-      console.log("am i reachin here ");
-      router.push("/login"); // Redirect to login if no token
-      return;
+    if (!storedToken || !isAdmin) {
+      return; // useAdminAuth hook will handle redirect
     }
-  }, []);
+  }, [getToken, isAdmin]);
 
   const fetchSubjects = async () => {
     try {

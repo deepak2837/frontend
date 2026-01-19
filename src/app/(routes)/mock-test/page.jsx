@@ -7,7 +7,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // This is the server component
 export default async function MockTests() {
   // Get auth token from cookies
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value;
 
   let testsData = [];
