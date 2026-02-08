@@ -1,0 +1,206 @@
+.generatePage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.generateCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sessionNameInput {
+  margin-bottom: 2rem;
+}
+
+.sessionNameInput label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.sessionNameInput input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.sessionNameInput input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.promptInput {
+  margin-bottom: 2rem;
+}
+
+.promptInput label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.promptInput textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.promptInput textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.charCount {
+  text-align: right;
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.examples {
+  margin-bottom: 2rem;
+}
+
+.examples h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.examplesList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.exampleButton {
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.exampleButton:hover:not(:disabled) {
+  background: #e3f2fd;
+  border-color: #4a90e2;
+  color: #4a90e2;
+}
+
+.exampleButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  padding: 0.75rem;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.generatingMessage {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #4a90e2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.generatingMessage p {
+  margin: 0;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.cancelButton,
+.generateButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 1rem;
+}
+
+.cancelButton {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.generateButton {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+}
+
+.generateButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.cancelButton:disabled,
+.generateButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .generateCard {
+    padding: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .generateButton {
+    width: 100%;
+  }
+}

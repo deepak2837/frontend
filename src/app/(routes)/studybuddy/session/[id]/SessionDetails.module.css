@@ -1,0 +1,424 @@
+.sessionPage {
+  padding: 2rem 0;
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #4a90e2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.processingCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.processingHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.processingHeader h3 {
+  margin: 0;
+  color: #333;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2, #357abd);
+  transition: width 0.5s;
+}
+
+.progressText {
+  text-align: center;
+  font-weight: 600;
+  color: #4a90e2;
+  margin-bottom: 0.5rem;
+}
+
+.processingMessage {
+  text-align: center;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.errorCard {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.errorCard h3 {
+  color: #c33;
+  margin-bottom: 1rem;
+}
+
+.backButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.backButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.contentSection {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #4a90e2;
+  background: #f8f9fa;
+}
+
+.activeTab {
+  color: #4a90e2;
+  border-bottom: 3px solid #4a90e2;
+  margin-bottom: -2px;
+}
+
+.tabContent {
+  padding: 2rem;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.questionCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.questionNumber {
+  font-weight: 700;
+  color: #4a90e2;
+  font-size: 1.125rem;
+}
+
+.difficulty {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.difficulty.easy {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty.medium {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty.hard {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.questionText {
+  font-size: 1.125rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.option {
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.correctOption {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.optionId {
+  font-weight: 700;
+  color: #4a90e2;
+}
+
+.explanation {
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.flashcardsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.flashcard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.flashcardFront,
+.flashcardBack {
+  margin-bottom: 1rem;
+}
+
+.flashcardFront strong,
+.flashcardBack strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a90e2;
+}
+
+.mnemonicsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mnemonicCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.mnemonicCard h4 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.mnemonicText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #4a90e2;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.mnemonicExplanation {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  background: #f0f0f0;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.cheatSheetsList,
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cheatSheetCard,
+.noteCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.cheatSheetCard h4,
+.noteCard h4 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.cheatSheetContent,
+.noteContent {
+  color: #555;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    flex-wrap: nowrap;
+  }
+
+  .tab {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .tabContent {
+    padding: 1rem;
+  }
+
+  .flashcardsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.mockTestsList {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.mockTestCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.mockTestCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mockTestCard h4 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.mockTestCard p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.testInfo {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.testInfo span {
+  color: #555;
+  font-size: 0.9rem;
+  background: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+}
+
+.startTestButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.startTestButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+
+.wrongOption {
+  background-color: #fee;
+  border-color: #f88;
+}

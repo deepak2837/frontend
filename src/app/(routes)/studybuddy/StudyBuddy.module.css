@@ -1,0 +1,344 @@
+.studyPlannerPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.studyPlannerContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.backButton:hover {
+  color: #ff6b9d;
+}
+
+.refreshButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid #e0e0e0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.refreshButton:hover {
+  border-color: #ff6b9d;
+  color: #ff6b9d;
+}
+
+.pageTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.titleIcon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+}
+
+.pageTitle h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.pageTitle p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.successMessage {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.successContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.successIcon {
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #155724;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+
+.closeButton:hover {
+  opacity: 0.7;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.plannerCard {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.planContent {
+  margin-bottom: 2rem;
+}
+
+.updateButtonContainer {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.updateButton {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.updateButton:hover {
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+  transform: translateY(-2px);
+}
+
+.noPlanCard {
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+  border: 2px dashed #ff6b9d;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.noPlanIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.noPlanCard h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.noPlanCard p {
+  color: #666;
+  font-size: 1rem;
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+}
+
+.createButton {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.createButton:hover {
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+  transform: translateY(-2px);
+}
+
+.helpSection {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 3rem;
+}
+
+.helpSection h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+}
+
+.helpGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.helpItem h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.helpItem p {
+  color: #666;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+}
+
+.loadingIcon {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border-radius: 50%;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.3;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.calendarIcon {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.loadingText {
+  color: #ff6b9d;
+  font-weight: 500;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 768px) {
+  .studyPlannerPage {
+    padding: 1rem;
+  }
+
+  .studyPlannerContainer {
+    padding: 0;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .pageTitle h1 {
+    font-size: 1.5rem;
+  }
+
+  .helpGrid {
+    grid-template-columns: 1fr;
+  }
+}

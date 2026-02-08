@@ -17,11 +17,17 @@ const Services = () => {
         {ServicesData.map(({ titleone, titletwo, link, itemclass, imgURL }, index) => {
           // Special styling for Study Notes box
           const isStudyNotes = titleone === "Study" && titletwo === "Notes";
+          const isStudyPlanner = titleone === "Study" && titletwo === "Planner";
+          const isStudyMaterialsGenerator = titleone === "Study Materials" && titletwo === "Generator";
+          
           const gradientClass = isStudyNotes
             ? 'bg-gradient-to-r from-pink-500 to-purple-600' // Same as notes page header
             : index % 2 === 0
             ? 'bg-gradient-to-r from-pink-500 via-yellow-500 to-orange-500'
             : 'bg-white border border-gray-300';
+          
+          // Larger image size for Study Planner and Study Materials Generator
+          const imageSize = (isStudyPlanner || isStudyMaterialsGenerator) ? 150 : 100;
           
           return (
             <a
@@ -46,10 +52,15 @@ const Services = () => {
                   <Image
                     src={imgURL.src}
                     alt={titleone}
-                    width={100}
-                    height={100}
-                    className="img-fluid w-full h-auto object-cover rounded-lg transform hover:scale-105 transition duration-300 ease-in-out"
-                    style={{ marginTop: '-15px', marginBottom: '-15px' }}
+                    width={imageSize}
+                    height={imageSize}
+                    className="img-fluid h-auto object-cover rounded-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                    style={{ 
+                      marginTop: '-15px', 
+                      marginBottom: '-15px',
+                      width: (isStudyPlanner || isStudyMaterialsGenerator) ? '150px' : '100%',
+                      maxWidth: (isStudyPlanner || isStudyMaterialsGenerator) ? '150px' : '100%'
+                    }}
                   />
                 </div>
               </div>

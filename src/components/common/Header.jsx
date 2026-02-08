@@ -42,6 +42,7 @@ function Header() {
   const getUserSettings = () => {
     const baseSettings = [
       { label: "Profile", link: "/profile" },
+      { label: "Study Plans", link: "/studybuddy" },
       { label: "My Records", link: "/records" },
     ];
 

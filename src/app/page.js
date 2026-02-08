@@ -17,6 +17,7 @@ const Services = dynamic(() => import("@/components/Home/Services/Services"));
 const SlideShow = dynamic(() =>
   import("@/components/Home/SlideShow/SlideShow")
 );
+
 const Testimonials = dynamic(() =>
   import("@/components/Testimonials/Testimonials")
 );
@@ -36,6 +37,7 @@ export default function Home() {
       <div className="main">
         <SlideShow imageLinks={imageLinks} />
         <Services />
+   
         <Testimonials />
         <CaseStudies />
         <BlogCards />

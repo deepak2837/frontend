@@ -21,8 +21,10 @@ import team04 from '../assets/team04.png';
 import team05 from '../assets/team05.png';
 import team06 from '../assets/team06.png';
 import team01 from '../assets/team01.png';
-import hero from '../assets/hero.png';
 
+import hero from '../assets/hero.png';
+import services08 from '../assets/study-materials-generator.png'
+import services09 from '../assets/study-planner.png'
 
 const assets = {
   thingshappen,
@@ -42,6 +44,8 @@ const assets = {
   services05,
   services06,
   services07,
+  services08,
+  services09,
   team02,
   team03,
   team04,

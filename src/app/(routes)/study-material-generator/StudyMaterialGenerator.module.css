@@ -1,0 +1,283 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 50%, #fff 100%);
+  padding: 2rem 1rem;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  background: white;
+  border: 1px solid #ffc0cb;
+  color: #ff6b9d;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background: #fff5f8;
+  border-color: #ff6b9d;
+}
+
+.titleSection {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+}
+
+.icon {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0 0 0.75rem 0;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  margin: 0;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.optionCard {
+  background: white;
+  border: 3px solid #ffc0cb;
+  border-radius: 20px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.optionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b9d 0%, #c06c84 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.optionCard:hover {
+  border-color: #ff6b9d;
+  box-shadow: 0 12px 32px rgba(255, 107, 157, 0.2);
+  transform: translateY(-4px);
+}
+
+.optionCard:hover::before {
+  transform: scaleX(1);
+}
+
+.optionCard.selected {
+  border-color: #ff6b9d;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+  box-shadow: 0 12px 32px rgba(255, 107, 157, 0.3);
+}
+
+.optionCard.selected::before {
+  transform: scaleX(1);
+}
+
+.optionIcon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+.optionTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0 0 0.75rem 0;
+}
+
+.optionDescription {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+  border: 1px solid #ffc0cb;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ff6b9d;
+}
+
+.selectButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.selectButton:hover {
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+  transform: translateY(-2px);
+}
+
+.generatesSection {
+  background: white;
+  border: 2px solid #ffc0cb;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.generatesTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.generatesIcon {
+  color: #ff6b9d;
+  font-size: 1.5rem;
+}
+
+.contentTypes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.contentType {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+  border: 1px solid #ffc0cb;
+  border-radius: 12px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.contentType:hover {
+  border-color: #ff6b9d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+}
+
+.emoji {
+  font-size: 1.5rem;
+}
+
+.infoBox {
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+  border: 2px solid #ffc0cb;
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.infoBox h4 {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #666;
+  line-height: 1.8;
+}
+
+.steps li {
+  margin-bottom: 0.5rem;
+}
+
+.steps li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .optionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contentTypes {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
